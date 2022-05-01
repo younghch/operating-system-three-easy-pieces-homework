@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
 #include <sys/wait.h>
 
 int main(int argc, char *argv[]) 
@@ -15,6 +16,8 @@ int main(int argc, char *argv[])
     }
     else if (rc == 0)
     {
+        close(STDOUT_FILENO);
+        open("./results.txt", O_CREAT|O_WRONLY|O_TRUNC, S_IRWXU);
         printf("hello, I am child (pid: %d)\n", (int) getpid());
         char *myargs[3];
         myargs[0] = strdup("wc");
