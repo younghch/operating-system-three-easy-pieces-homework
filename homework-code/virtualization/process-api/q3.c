@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     }
     else
     {
+        wait(NULL);
         printf("Good bye\n");
     }
     return 0;
