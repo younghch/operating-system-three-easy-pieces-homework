@@ -16,11 +16,11 @@ int main(int argc, char *argv[])
     }
     else if (rc == 0)
     {
-        write(fd, "child writes second line\n", 26);   
+        write(fd, "child writes first/second line\n", 32);   
     }
     else
     {
-        write(fd, "parent writes first line\n", 26);
+        write(fd, "parent writes first/second line\n", 33);
         wait(NULL);
         write(fd, "parent writes third line\n", 26);
     }
