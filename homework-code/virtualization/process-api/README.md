@@ -12,9 +12,11 @@
     wait() is necessary. We can try to use sleep or run large loop in the parent process hoping the OS to switch process, But it's not ensured.
 
 ## 4. Write a program that calls fork() and then calls some form of exec() to run the program /bin/ls. See if you can try all of the variants of exec(), including (on Linux) execl(), execle(), execlp(), execv(), execvp(), and execvpe(). Why do you think there are so many variants of the same basic call?
+    l and v flags determines the way to pass the parameter. For l pass parameter indiviualy, for v as a array of char*. p flags pass PATH environment together, e flag pass additional envp parameter which specifies the environment for new process image.
 
-5. Now write a program that uses wait() to wait for the child process to finish in the parent. What does wait() return? What happens if you use wait() in the child?
-
+## 5. Now write a program that uses wait() to wait for the child process to finish in the parent. What does wait() return? What happens if you use wait() in the child?
+    wait returns pid of child, -1 for error. 
+    
 6. Write a slight modification of the previous program, this time using waitpid() instead of wait(). When would waitpid() be useful?
 
 7. Write a program that creates a child process, and then in the child closes standard output (STDOUT FILENO). What happens if the child calls printf() to print some output after closing the descriptor?
