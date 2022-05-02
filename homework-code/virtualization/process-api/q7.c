@@ -16,15 +16,13 @@ int main(int argc, char *argv[])
     else if (rc == 0)
     {   
         printf("child pid: %d\n", getpid());
-        sleep(3);
-        printf("child ended\n");
+        close(STDOUT_FILENO);
+        printf("Where would this be written?\n");
     }
     else
     {
+        wait(NULL);
         printf("parent pid: %d\n", getpid());
-        int ret = waitpid(rc, &status, WNOHANG);
-        printf("wait pid return: %d\nchild exit normally: %s\nchild exit with code 0: %s\n",
-         ret, WIFEXITED(status) ? "true" : "false", WEXITSTATUS(status) == 0 ? "true" : "false");
     }
     return 0;
 }

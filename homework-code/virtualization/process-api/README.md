@@ -23,6 +23,6 @@ wait() returns pid of child, -1 for error.
 
 waitpid() would be useful when there are multiple child process.
 
-7. Write a program that creates a child process, and then in the child closes standard output (STDOUT FILENO). What happens if the child calls printf() to print some output after closing the descriptor?
+#### 7. Write a program that creates a child process, and then in the child closes standard output (STDOUT FILENO). What happens if the child calls printf() to print some output after closing the descriptor?
 
 8. Write a program that creates two children, and connects the standard output of one to the standard input of the other, using the pipe() system call.
