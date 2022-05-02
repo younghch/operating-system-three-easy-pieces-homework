@@ -5,7 +5,6 @@
 
 int main(int argc, char *argv[]) 
 {
-    int status;
     int rc = fork();
 
     if (rc < 0) 
