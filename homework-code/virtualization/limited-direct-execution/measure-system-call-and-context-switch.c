@@ -76,10 +76,10 @@ int measure_context_swtich(int number_of_loop)
         close(fd2[READ]);
         while (count < number_of_loop)
         {
-            write(fd2[WRITE], "p", 1);
-            write(1, "child write\n", 13);
             read(fd1[READ], dest, 1);    
             write(1, "child read\n", 12);
+            write(fd2[WRITE], "c", 1);
+            write(1, "child write\n", 13);
             count += 2;
         }
         if (getcpu(&cpu_id, NULL) == -1)
