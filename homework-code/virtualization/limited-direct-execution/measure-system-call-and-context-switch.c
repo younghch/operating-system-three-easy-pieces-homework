@@ -59,9 +59,7 @@ int measure_context_swtich(int number_of_loop)
         while (count < number_of_loop)
         {
             write(fd1[WRITE], "p", 1);
-            write(1, "parent write\n", 14);
             read(fd2[READ], dest, 1);
-            write(1, "parent read\n", 13);
             count += 2;
         }
         if (gettimeofday(&end, NULL) == -1 || getcpu(&cpu_id, NULL) == -1)
@@ -77,9 +75,7 @@ int measure_context_swtich(int number_of_loop)
         while (count < number_of_loop)
         {
             read(fd1[READ], dest, 1);    
-            write(1, "child read\n", 12);
             write(fd2[WRITE], "c", 1);
-            write(1, "child write\n", 13);
             count += 2;
         }
         if (getcpu(&cpu_id, NULL) == -1)
