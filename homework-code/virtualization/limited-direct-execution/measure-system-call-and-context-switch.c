@@ -12,12 +12,13 @@ double get_elapsed_seconds(struct timeval start, struct timeval end)
     return end.tv_sec + end.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 }
 
-int measure_system_call(int number_of_loop, struct timeval start, struct timeval end)
+int measure_system_call(int number_of_loop)
 {
     int count;
+    struct  timeval start, end;
     
     count = 0;
-    if (gettimeofday(&start, NULL))
+    if (gettimeofday(&start, NULL) == -1)
         return 1;
     while (count < number_of_loop){
         read(0, NULL, 0);
@@ -29,12 +30,13 @@ int measure_system_call(int number_of_loop, struct timeval start, struct timeval
     return 0;   
 }
 
-int measure_context_swtich(int number_of_loop, struct timeval start, struct timeval end)
+int measure_context_swtich(int number_of_loop)
 {
     cpu_set_t       set;
     int             count, p1;
     unsigned int    cpu_id;
     int             fd[2];
+    struct          timeval start, end;
 
     CPU_ZERO(&set);
     CPU_SET(0, &set);
@@ -43,12 +45,13 @@ int measure_context_swtich(int number_of_loop, struct timeval start, struct time
     (
         pipe(fd) == -1 || 
         (p1 = fork()) == -1 ||
-        sched_setaffinity(getpid(), sizeof(cpu_set_t), &set) == -1 || 
-        gettimeofday(&start, NULL)  == -1
+        sched_setaffinity(getpid(), sizeof(cpu_set_t), &set) == -1
     )
-        return 1;
+    return 1;
     if (p1 != 0)
     {
+        if (gettimeofday(&start, NULL)  == -1)
+            return 1;
         close(fd[READ]);
         while (count < number_of_loop)
         {
@@ -77,12 +80,11 @@ int measure_context_swtich(int number_of_loop, struct timeval start, struct time
 
 int main(int argc, char *argv[]) 
 {
-    struct  timeval start, end;
     int     number_of_loop;
 
     if (argc == 1)  number_of_loop = 1000;
     else            number_of_loop = atoi(argv[1]);
-    if (measure_system_call(number_of_loop, start, end))    return 1;
-    if (measure_context_swtich(number_of_loop, start, end)) return 1;
+    if (measure_system_call(number_of_loop))    return 1;
+    if (measure_context_swtich(number_of_loop)) return 1;
     return 0;
 }
