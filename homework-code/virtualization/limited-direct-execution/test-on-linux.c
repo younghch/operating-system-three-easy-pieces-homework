@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <sched.h>
+#include <sys/shm.h> 
+#include <sys/ipc.h>
 
 double get_elapsed_seconds(struct timeval start, struct timeval end)
 {
@@ -33,16 +35,21 @@ int measure_system_call(int number_of_loop)
 int measure_context_swtich(int number_of_loop)
 {
     cpu_set_t       set;
-    int             count, p1;
+    int             count, p1, shmid;
     unsigned int    cpu_id;
     int             fd[2];
+    char            *check_switched;
+    key_t           key;
     struct          timeval start, end;
 
+    key = 123456;
+    shmid = shmget(key, 11, IPC_CREAT);
     CPU_ZERO(&set);
     CPU_SET(0, &set);
     count = 0;
     if 
     (
+
         pipe(fd) == -1 || 
         (p1 = fork()) == -1 ||
         sched_setaffinity(getpid(), sizeof(cpu_set_t), &set) == -1
@@ -58,8 +65,9 @@ int measure_context_swtich(int number_of_loop)
         close(fd[READ]);
         while (count < number_of_loop)
         {
-            write(fd[WRITE], "p\n", 3);
+            write(fd[WRITE], "p", 1);
             count += 2;
+            close(fd[WRITE]);
             write(1, "parent write\n", 14);
         }
         if (gettimeofday(&end, NULL) == -1 || getcpu(&cpu_id, NULL) == -1)
@@ -69,13 +77,14 @@ int measure_context_swtich(int number_of_loop)
     }
     else 
     {
-        char dest[3];
+        char dest[1];
         
         close(fd[WRITE]);
         while (count < number_of_loop)
         {
-            read(fd[READ], dest, 3);     
+            read(fd[READ], dest, 1);     
             count += 2;
+            close(fd[READ]);
             write(1, "child read\n", 12);
         }
         if (getcpu(&cpu_id, NULL) == -1)
