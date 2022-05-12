@@ -51,15 +51,16 @@ int measure_context_swtich(int number_of_loop)
     return 1;
     if (p1 != 0)
     {
+        char dest[1];
         if (gettimeofday(&start, NULL)  == -1)
             return 1;
         close(fd1[READ]);
         close(fd2[WRITE]);
         while (count < number_of_loop)
         {
-            write(fd1[WRITE], NULL, 0);
+            write(fd1[WRITE], "p", 1);
             write(1, "parent write\n", 14);
-            read(fd2[READ], NULL, 0);
+            read(fd2[READ], dest, 1);
             write(1, "parent read\n", 13);
             count += 2;
         }
@@ -70,13 +71,14 @@ int measure_context_swtich(int number_of_loop)
     }
     else 
     {
+        char dest[1];
         close(fd1[WRITE]);
         close(fd2[READ]);
         while (count < number_of_loop)
         {
-            write(fd2[WRITE], NULL, 0);
+            write(fd2[WRITE], "p", 1);
             write(1, "child write\n", 13);
-            read(fd1[READ], NULL, 0);    
+            read(fd1[READ], dest, 1);    
             write(1, "child read\n", 12);
             count += 2;
         }
