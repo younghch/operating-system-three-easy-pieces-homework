@@ -35,7 +35,7 @@ int measure_context_swtich(int number_of_loop)
     cpu_set_t       set;
     int             count, p1;
     unsigned int    cpu_id;
-    int             fd[2];
+    int             fd1[2], fd2[2];
     struct          timeval start, end;
 
     CPU_ZERO(&set);
@@ -43,7 +43,8 @@ int measure_context_swtich(int number_of_loop)
     count = 0;
     if 
     (
-        pipe(fd) == -1 || 
+        pipe(fd1) == -1 || 
+        pipe(fd2) == -1 || 
         (p1 = fork()) == -1 ||
         sched_setaffinity(getpid(), sizeof(cpu_set_t), &set) == -1
     )
@@ -52,10 +53,14 @@ int measure_context_swtich(int number_of_loop)
     {
         if (gettimeofday(&start, NULL)  == -1)
             return 1;
-        close(fd[READ]);
+        close(fd1[READ]);
+        close(fd2[WRITE]);
         while (count < number_of_loop)
         {
-            write(fd[WRITE], NULL, 0);
+            write(fd1[WRITE], NULL, 0);
+            write(1, "parent write\n", 14);
+            read(fd2[READ], NULL, 0);
+            write(1, "parent read\n", 13);
             count += 2;
         }
         if (gettimeofday(&end, NULL) == -1 || getcpu(&cpu_id, NULL) == -1)
@@ -65,10 +70,14 @@ int measure_context_swtich(int number_of_loop)
     }
     else 
     {
-        close(fd[WRITE]);
+        close(fd1[WRITE]);
+        close(fd2[READ]);
         while (count < number_of_loop)
         {
-            read(fd[READ], NULL, 0);     
+            write(fd2[WRITE], NULL, 0);
+            write(1, "child write\n", 13);
+            read(fd1[READ], NULL, 0);    
+            write(1, "child read\n", 12);
             count += 2;
         }
         if (getcpu(&cpu_id, NULL) == -1)
