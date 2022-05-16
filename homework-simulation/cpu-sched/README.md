@@ -45,7 +45,8 @@ Assume jobs came in order (300, 200, 100)
   
     Total response time of running N jobs can be written as
 
-    ![eq1](./response_time.png)![condition](./condition.png) 
+    ![eq1](./response_time.png)
+    ![condition](./condition.png) 
     
     Which means shorter jobs has larger effect on total response time.
 
