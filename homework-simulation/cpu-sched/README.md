@@ -46,11 +46,12 @@ Assume jobs came in order (300, 200, 100)
     Total response time of running N jobs can be written as
 
     ![eq1](./response_time.png)
+
     ![condition](./condition.png) 
     
     Which means shorter jobs has larger effect on total response time.
 
-7. What happens to response time with RR as quantum lengths in- crease? Can you write an equation that gives the worst-case response time, given N jobs?
+7. What happens to response time with RR as quantum lengths increase? Can you write an equation that gives the worst-case response time, given N jobs?
 
     Larger the quantum lengths, larger the response time. Assume response time is infinite response time is
     
