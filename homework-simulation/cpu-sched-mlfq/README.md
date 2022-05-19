@@ -25,29 +25,22 @@
 2. How would you run the scheduler to reproduce each of the exam- ples in the chapter?
   
     1. A Single Long-Running Job: mlfq.py -n 3 -l 0,200,0
-
-    ![A Single Long-Running Job](./single-job.png)
+        ![A Single Long-Running Job](./single-job.png)
     1. Along Came A Short Job: mlfq.py -n 3 -l 0,180,0:100,20,0
-
-    ![Along Came A Short Job](./interactive-job.png)
+        ![Along Came A Short Job](./interactive-job.png)
     1. A Mixed I/O intensive and CPU-intensive Workload I/O: mlfq.py -n 3 -l 0,180,0:50,20,1 --stay -c
-    ![A Mixed I/O intensive and CPU-intensive Workload I/O](./mixed-io-and-cpu.png)
+        ![A Mixed I/O intensive and CPU-intensive Workload I/O](./mixed-io-and-cpu.png)
     1. Proiority Boost: 
-
-    ![Proiority Boost](./priority-boost.png)
-
+        ![Proiority Boost](./priority-boost.png)
         - without priority boost(starvation): mlfq.py -n 3 -l 0,160,0:100,20,1:100,20,1 --stay -i 1
         - with priority boost: mlfq.py -n 3 -l 0,160,0:100,20,1:100,20,1 --stay --boost 50 -i 1
     1. Gaming Tolerance:  
-
-    ![Gaming Tolerance](./gaming-tolerance.png)
-
+        ![Gaming Tolerance](./gaming-tolerance.png)
         - without gaming tolerance: mlfq.py -n 3 -l 0,200,0:75,100,9 --stay -i 1 
         - with gaming tolerance: mlfq.py -n 3 -l 0,200,0:75,100,9 -i 1 
     
     1. Lower Priority, Longer Quanta: mlfq.py -Q 10,20,40 -l 0,150,0:0,150,0 -c
-    
-    ![Lower Priority, Longer Quanta](./lower-priority-longer-quanta.png)
+        ![Lower Priority, Longer Quanta](./lower-priority-longer-quanta.png)
 
 3. How would you configure the scheduler parameters to behave just like a round-robin scheduler?
 4. Craft a workload with two jobs and scheduler parameters so that one job takes advantage of the older Rules 4a and 4b (turned on with the -S flag) to game the scheduler and obtain 99% of the CPU over a particular time interval.
