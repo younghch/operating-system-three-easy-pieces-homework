@@ -53,9 +53,37 @@
         ![Lower Priority, Longer Quanta](./lower-priority-longer-quanta.png)
 
 3. How would you configure the scheduler parameters to behave just like a round-robin scheduler?
+
+    Use only one queue. **mlfq.py -n 1 -c**
+    
 4. Craft a workload with two jobs and scheduler parameters so that one job takes advantage of the older Rules 4a and 4b (turned on with the -S flag) to game the scheduler and obtain 99% of the CPU over a particular time interval.
-5. Given a system with a quantum length of 10ms in it's highest queue, how often would you have to boost jobs back to the highest priority level (with the -B flag) in order to guarantee that a single long- running (and potentially-starving) job gets at least 5% of the CPU?
+
+    mlfq.py -n 3 -l 0,200,0:75,100,9 -S -i 1 -c. Job 1 always runs on highest priority.
+
+5. Given a system with a quantum length of 10ms in it's highest queue, how often would you have to boost jobs back to the highest priority level (with the -B flag) in order to guarantee that a single long-running (and potentially-starving) job gets at least 5% of the CPU?
+
+    200 ms
+
 6. One question that arises in scheduling is which end of a queue to add a job that just finished I/O; the -I flag changes this behavior for this scheduling simulator. Play around with some workloads and see if you can see the effect of this flag.
+
+    ***Flag:***
+    
+        - mlfq.py -s 42 -m 10,
+        - mlfq.py -s 42 -m 10 -I
+
+    ***Job List:***
+      
+        - Job  0: startTime   0 - runTime   6 - ioFreq   1
+        - Job  1: startTime   0 - runTime   3 - ioFreq   3
+        - Job  2: startTime   0 - runTime   7 - ioFreq   7
+
+    ***Turnaround time:***
+
+        - with I flag: 17.00
+        - without I flag: 15.67
+
+
+    With -I flag a job that finished it's I/O moved to front of the queue. This makes the average turnaround time to be shorter. Because a job that frequently makes I/O is moved to front, IDLE time is decreased.
 
 # Overview
 This program, `mlfq.py`, allows you to see how the MLFQ scheduler
