@@ -4,127 +4,67 @@
 This program, lottery.py, allows you to see how a lottery scheduler
 works. As always, there are two steps to running the program. First, run
 without the -c flag: this shows you what problem to solve without
-revealing the answers. 
+revealing the answers.  [link](https://github.com/remzi-arpacidusseau/ostep-homework/tree/master/cpu-sched-lottery)
 
-```sh
-prompt> ./lottery.py -j 2 -s 0
-...
-Here is the job list, with the run time of each job: 
-  Job 0 ( length = 8, tickets = 75 )
-  Job 1 ( length = 4, tickets = 25 )
+# Questions
 
-Here is the set of random numbers you will need (at most):
-Random 511275
-Random 404934
-Random 783799
-Random 303313
-Random 476597
-Random 583382
-Random 908113
-Random 504687
-Random 281838
-Random 755804
-Random 618369
-Random 250506
-```
+1. Compute the solutions for simulations with 3 jobs and randomseeds of 1, 2, and 3.
 
-When you run the simulator in this manner, it first assigns you some random
-jobs (here of lengths 8, and 4), each with some number of tickets (here 75 and
-25, respectively). The simulator also gives you a list of random numbers,
-which you will need to determine what the lottery scheduler will do. The
-random numbers are chosen to be between 0 and a large number; thus, you'll
-have to use the modulo operator to compute the lottery winner (i.e., winner
-should equal this random number modulo the total number of tickets in the
-system). 
+    ***Seed: 1***
 
-Running with -c shows exactly what you are supposed to calculate:
+    ***Job List:***
+    - Job 0 ( length = 1, tickets = 84 )
+    - Job 1 ( length = 7, tickets = 25 )
+    - Job 2 ( length = 4, tickets = 44 )
 
-```sh
-prompt> ./lottery.py -j 2 -s 0 -c
-...
-** Solutions **
-Random 511275 -> Winning ticket 75 (of 100) -> Run 1
-  Jobs:  (  job:0 timeleft:8 tix:75 ) (* job:1 timeleft:4 tix:25 )
-Random 404934 -> Winning ticket 34 (of 100) -> Run 0
-  Jobs:  (* job:0 timeleft:8 tix:75 ) (  job:1 timeleft:3 tix:25 )
-Random 783799 -> Winning ticket 99 (of 100) -> Run 1
-  Jobs:  (  job:0 timeleft:7 tix:75 ) (* job:1 timeleft:3 tix:25 )
-Random 303313 -> Winning ticket 13 (of 100) -> Run 0
-  Jobs:  (* job:0 timeleft:7 tix:75 ) (  job:1 timeleft:2 tix:25 )
-Random 476597 -> Winning ticket 97 (of 100) -> Run 1
-  Jobs:  (  job:0 timeleft:6 tix:75 ) (* job:1 timeleft:2 tix:25 )
-Random 583382 -> Winning ticket 82 (of 100) -> Run 1
-  Jobs:  (  job:0 timeleft:6 tix:75 ) (* job:1 timeleft:1 tix:25 )
---> JOB 1 DONE at time 6
-Random 908113 -> Winning ticket 13 (of 75) -> Run 0
-  Jobs:  (* job:0 timeleft:6 tix:75 ) (  job:1 timeleft:0 tix:--- )
-Random 504687 -> Winning ticket 12 (of 75) -> Run 0
-  Jobs:  (* job:0 timeleft:5 tix:75 ) (  job:1 timeleft:0 tix:--- )
-Random 281838 -> Winning ticket 63 (of 75) -> Run 0
-  Jobs:  (* job:0 timeleft:4 tix:75 ) (  job:1 timeleft:0 tix:--- )
-Random 755804 -> Winning ticket 29 (of 75) -> Run 0
-  Jobs:  (* job:0 timeleft:3 tix:75 ) (  job:1 timeleft:0 tix:--- )
-Random 618369 -> Winning ticket 69 (of 75) -> Run 0
-  Jobs:  (* job:0 timeleft:2 tix:75 ) (  job:1 timeleft:0 tix:--- )
-Random 250506 -> Winning ticket 6 (of 75) -> Run 0
-  Jobs:  (* job:0 timeleft:1 tix:75 ) (  job:1 timeleft:0 tix:--- )
---> JOB 0 DONE at time 12
-```
+    ***Execution Trace***
+    1. Random 651593
+        
+        - total tickets: 153
+        - winning ticket: 651593%153 = 119
+        - run: JOB 2(left 3)
+    1. Random 788724
 
-As you can see from this trace, what you are supposed to do is use the random
-number to figure out which ticket is the winner. Then, given the winning
-ticket, figure out which job should run. Repeat this until all of the jobs are
-finished running. It's as simple as that -- you are just emulating what the
-lottery scheduler does, but by hand!
+        - total tickets: 153
+        - winning ticket: 788724%153 = 9
+        - run: JOB 0(left 0, Done)
 
-Just to make this absolutely clear, let's look at the first decision made in
-the example above. At this point, we have two jobs (job 0 which has a runtime
-of 8 and 75 tickets, and job 1 which has a runtime of 4 and 25 tickets). The
-first random number we are given is 511275. As there are 100 tickets in the
-system, 511275 \% 100 is 75, and thus 75 is our winning ticket.
+    1. Random 93859
 
-If ticket 75 is the winner, we simply search through the job list until we
-find it. The first entry, for job 0, has 75 tickets (0 through 74), and thus
-does not win; the next entry is for job 1, and thus we have found our winner,
-so we run job 1 for the quantum length (1 in this example). All of this is
-shown in the print out as follows:
+        - total tickets: 69
+        - winning ticket: 93859%69 = 19
+        - run: JOB 1(left 6)
+    1. Random 28347
 
-```sh
-Random 511275 -> Winning ticket 75 (of 100) -> Run 1
-  Jobs:  (  job:0 timeleft:8 tix:75 ) (* job:1 timeleft:4 tix:25 )
-```
+        - total tickets: 69
+        - winning ticket: 28347%69 = 57
+        - run: JOB 2(left 2)
+    1. Random 835765
 
-As you can see, the first line summarizes what happens, and the second simply
-shows the entire job queue, with an * denoting which job was chosen.
+        - total tickets: 69
+        - winning ticket: 835765%69 = 37
+        - run: JOB 2(left 1)
 
-The simulator has a few other options, most of which should be
-self-explanatory. Most notably, the -l/--jlist flag can be used to specify an
-exact set of jobs and their ticket values, instead of always using
-randomly-generated job lists.
+    1. Random 432767
+        - total tickets: 69
+        - winning ticket: 432767%69 = 68
+        - run: JOB 2(left 0, Done)
 
-```sh
-prompt> ./lottery.py -h
-Usage: lottery.py [options]
+    1. Random 762280, 2106, 445387, 721540, 228762, 945271
+        - run JOB 1 until done
 
-Options:
-  -h, --help            
-      show this help message and exit
-  -s SEED, --seed=SEED  
-      the random seed
-  -j JOBS, --jobs=JOBS  
-      number of jobs in the system
-  -l JLIST, --jlist=JLIST
-      instead of random jobs, provide a comma-separated list
-      of run times and ticket values (e.g., 10:100,20:100
-      would have two jobs with run-times of 10 and 20, each
-      with 100 tickets)
-  -m MAXLEN, --maxlen=MAXLEN
-      max length of job
-  -T MAXTICKET, --maxtick=MAXTICKET
-      maximum ticket value, if randomly assigned
-  -q QUANTUM, --quantum=QUANTUM
-      length of time slice
-  -c, --compute
-      compute answers for me
-```
 
+2. Now run with two specific jobs: each of length 10, but one (job 0) with just 1 ticket and the other (job 1) with 100 (e.g., -l 10:1,10:100). What happens when the number of tickets is so imbalanced? Will job 0 ever run before job 1 completes? How often? In general, what does such a ticket imbalance do to the behavior of lottery scheduling?
+
+    Job 0 almost never gets a chance of running, so it is impossible to complete before job 1. The probability of Job 0 end before Job 1 is nearly 10 power of -20. In general, it acts as running larger probability job first.
+
+3. When running with two jobs of length 100 and equal ticket alloca- tions of 100 (-l 100:100,100:100), how unfair is the scheduler? Run with some different random seeds to determine the (probabilistic) answer; let unfairness be determined by how much earlier one job finishes than the other.
+
+
+4. How does your answer to the previous question changeas the quantum size (-q) gets larger?
+ 
+    As quantum size gets largert, unfairness gets larger.
+
+5. Can you make a version of the graph that is found in the chapter? What else would be worth exploring? How would the graph look with a stride scheduler?
+
+    With a stride schedular, fairness will be **JOB_LENGTH/(JOB_LENGTH+1)**. As length of the job gets higher, fairness gets closer to one.
