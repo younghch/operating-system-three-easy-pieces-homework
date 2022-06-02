@@ -11,10 +11,11 @@
 SYS_EXIT    equ 1
 SYS_WRITE   equ 4
 STDIN       equ 0
+STDOUT      equ 1
 
             segment .data
 
-msg         db      "The result is: ", 0xA,0xd
+msg         db      "The result is: ", 0xA
 len         equ     $ - msg
 
             segment .bss
@@ -31,6 +32,12 @@ _start:
             add     al, '0'
 
             mov     [res], al
+            
+            mov     eax, SYS_WRITE
+            mov     ebx, STDOUT
+            mov     ecx, msg
+            mov     edx, len
+            int     0x80
             mov     eax, SYS_WRITE
             mov     ebx, STDOUT
             mov     ecx, res
