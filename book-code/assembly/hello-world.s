@@ -1,4 +1,6 @@
-
+;
+; Hello world program for IA-32 architecture
+;
                 segment .text
                 global  _start
 _start:         mov     edx, 13
