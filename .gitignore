@@ -2,3 +2,4 @@
 *.out
 test.c
 .DS_Store
+*.test
