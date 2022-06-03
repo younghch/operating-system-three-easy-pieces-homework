@@ -1,5 +1,5 @@
 ;
-; A multiplies 3 with 2
+; this program multiplies 3 with 2
 ;
 ;  difference between eax,ax,al,ah:
 ;  - EAX is the full 32-bit value
