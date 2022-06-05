@@ -7,19 +7,20 @@
 
 * answers link start with 'Run' is not done yet. still working on
 
-# Virtualization
+# Link to each chapter
+## Virtualization
 
-Chapter | Answers
+Chapter | Link
 --------|-----------
-[Process API](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf) | [link](homework-code/virtualization/process-api)
-[Direct Execution](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf) | [link](homework-code/virtualization/limited-direct-execution)
-[Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | [link](homework-simulation/cpu-sched)
-[MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| [link](homework-simulation/cpu-sched-mlfq)
-[Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | [link](homework-simulation/cpu-sched-lottery)
+[Process API](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf) | [write some codes to get familiar with process management api](homework-code/virtualization/process-api)
+[Direct Execution](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf) | [measure cost of a system call and context switch](homework-code/virtualization/limited-direct-execution)
+[Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | [compare SJF, FIFO, RR schedulers under various conditions](homework-simulation/cpu-sched)
+[MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| [see how a MLFQ scheduler behaves](homework-simulation/cpu-sched-mlfq)
+[Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | [see how a lottery scheduler works](homework-simulation/cpu-sched-lottery)
 [Multiprocessor Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf) | Run multi.py
-[Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | [link](homework-code/virtualization/address-space)
-[VM API](http://www.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf) | [link](homework-code/virtualization/memory-api)
-[Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | [link](homework-simulation/vm-mechanism)
+[Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | [examine virtual memory usage on Linux-based systems](homework-code/virtualization/address-space)
+[Memory API](http://www.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf) | [write buggy program and use tools to find the bug](homework-code/virtualization/memory-api)
+[Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | [calculate translated address and check valid](homework-simulation/vm-mechanism)
 [Segmentation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf) | [link](homework-simulation/vm-segmentation)
 [Free Space](http://www.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf) | Run [malloc.py](vm-freespace)
 [Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf) | Run [paging-linear-translate.py](vm-paging)
@@ -29,7 +30,7 @@ Chapter | Answers
 [Paging Policy](http://www.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf) | Run [paging-policy.py](vm-beyondphys-policy)
 [Complete VM](http://www.cs.wisc.edu/~remzi/OSTEP/vm-complete.pdf) | No homework (yet)
 
-# Concurrency
+## Concurrency
 
 Chapter | What To Do
 --------|-----------
@@ -42,7 +43,7 @@ Chapter | What To Do
 [Concurrency Bugs](http://www.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf) | Run [some C code](threads-bugs)
 [Event-based Concurrency](http://www.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf) | 
 
-# Persistence
+## Persistence
 
 Chapter | What To Do
 --------|-----------
