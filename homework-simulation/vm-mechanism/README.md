@@ -169,6 +169,20 @@ respectively).
 
 3. Run with these flags: ```-s 1 -n 10 -l 100```. What is the maximum value that base can be set to, such that the address space still fits into physical memory in its entirety?
 
+    Arguments:
+      - seed 1
+      - address space size 1k
+      - phys mem size 16k
+
+    Base-and-Bounds register information:
+      - Limit   : 100
+
+    Maximum value base can be set: memory size - limit = 16k - 100 = 0x00003f9c
+
 4. Run some of the same problems above, but with larger address spaces (-a) and physical memories (-p).
 
+    Maximum value base can be set: memory size - limit
+
 5. What fraction of randomly-generated virtual addresses are valid, as a function of the value of the bounds register? Make a graph from running with different random seeds, with limit values ranging from 0 up to the maximum size of the address space.
+
+    The fraction of valid randomly-generated virtual addresses and a value of bound register will be linearly proportional for bound register size 0 to the address space size(1k). If limit is larger than address space size, all randomly generated address will be valid so portion will be 1.
