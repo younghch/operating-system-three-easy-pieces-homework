@@ -37,7 +37,7 @@ pairs. The segment-0 base tells which physical address the *top* of segment 0
 has been placed in physical memory and the limit tells how big the segment is;
 the segment-1 base tells where the *bottom* of segment 1 has been placed in
 physical memory and the corresponding limit also tells us how big the segment
-is (or how far it grows in the negative direction).[...](https://github.com/remzi-arpacidusseau/ostep-homework/tree/master/vm-segmentation)
+is (or how far it grows in the negative direction).[click to see more](https://github.com/remzi-arpacidusseau/ostep-homework/tree/master/vm-segmentation)
 
 # Questions
 
