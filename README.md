@@ -10,16 +10,15 @@
 
 Chapter | Answers
 --------|-----------
-[Abstraction: Processes](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf) | [homework-code/virtualization/process-api](homework-code/virtualization/process-api)
-[Process API](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf) |  
-[Direct Execution](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf) | 
-[Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | 
-[MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| 
-[Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | 
+[Process API](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf) | [link](homework-code/virtualization/process-api)
+[Direct Execution](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf) | [link](homework-code/virtualization/limited-direct-execution)
+[Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | [link](homework-simulation/cpu-sched)
+[MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| [link](homework-simulation/cpu-sched-mlfq)
+[Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | [link](homework-simulation/cpu-sched-lottery)
 [Multiprocessor Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf) | 
-[Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | 
-[VM API](http://www.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf) | 
-[Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | 
+[Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | [link](homework-code/virtualization/address-space)
+[VM API](http://www.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf) | [link](homework-code/virtualization/memory-api)
+[Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | [link](homework-simulation/vm-mechanism)
 [Segmentation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf) | 
 [Free Space](http://www.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf) | Run [malloc.py](vm-freespace)
 [Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf) | Run [paging-linear-translate.py](vm-paging)
