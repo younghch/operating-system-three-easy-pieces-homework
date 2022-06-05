@@ -137,9 +137,9 @@ respectively).
     Virtual Address Trace:
       - VA  0: 0x00000039 (decimal:   57) --> 0x00003ce2
       - VA  1: 0x00000056 (decimal:   86) --> 0x00003cff
-      - VA  2: 0x00000357 (decimal:  855) --> segmentation violation?
-      - VA  3: 0x000002f1 (decimal:  753) --> segmentation violation?
-      - VA  4: 0x000002ad (decimal:  685) --> segmentation violation?
+      - VA  2: 0x00000357 (decimal:  855) --> segmentation violation
+      - VA  3: 0x000002f1 (decimal:  753) --> segmentation violation
+      - VA  4: 0x000002ad (decimal:  685) --> segmentation violation
     
 
 2. Run with these flags:``` -s 0 -n 10```. What value do you have set ```-l``` (the bounds register) to in order to ensure that all the generated virtual addresses are within bounds?
