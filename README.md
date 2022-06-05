@@ -7,7 +7,7 @@
 
 * answers link start with 'Run' is not done yet. still working on
 
-# Link to each chapter
+# Link to the answer of each chapter
 ## Virtualization
 
 Chapter | Link
