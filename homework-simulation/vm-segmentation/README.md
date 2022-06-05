@@ -249,11 +249,58 @@ Enjoy!
       VA  3: 0x0000000a (decimal:   10) --> 0                         translated address: 10
       VA  4: 0x0000006a (decimal:  106) --> 1                         offset = 21, segmentation violation
     ```
-2. Now, let’s see if we understand this tiny address space we’ve con- structed (using the parameters from the question above). What is the highest legal virtual address in segment 0? What about the low- est legal virtual address in segment 1? What are the lowest and highest illegal addresses in this entire address space? Finally, how would you run segmentation.py with the -A flag to test if you are right?
-3. Let’ssaywehaveatiny16-byteaddressspaceina128-bytephysical memory. What base and bounds would you set up so as to get the simulator to generate the following translation results for the specified address stream: valid, valid, violation, ..., violation, valid, valid? Assume the following parameters:
+2. Now, let’s see if we understand this tiny address space we’ve constructed (using the parameters from the question above). What is the highest legal virtual address in segment 0? What about the lowest legal virtual address in segment 1? What are the lowest and highest illegal addresses in this entire address space? Finally, how would you run segmentation.py with the -A flag to test if you are right?
+
+    highest legal virtual address in segment 0: 19
+
+    lowest  legal virtual address in segment 1: 108
+
+    lowest and highest illegal addresses in this entire address space: 20 / 107
+
+    test : ```segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512 -L 20 -A 19,20,108,107  -c```
+
+    result:
+    ```
+    ARG seed 0
+    ARG address space size 128
+    ARG phys mem size 512
+
+    Segment register information:
+
+      Segment 0 base  (grows positive) : 0x00000000 (decimal 0)
+      Segment 0 limit                  : 20
+
+      Segment 1 base  (grows negative) : 0x00000200 (decimal 512)
+      Segment 1 limit                  : 20
+
+    Virtual Address Trace
+      VA  0: 0x00000013 (decimal:   19) --> VALID in SEG0: 0x00000013 (decimal:   19)
+      VA  1: 0x00000014 (decimal:   20) --> SEGMENTATION VIOLATION (SEG0)
+      VA  2: 0x0000006c (decimal:  108) --> VALID in SEG1: 0x000001ec (decimal:  492)
+      VA  3: 0x0000006b (decimal:  107) --> SEGMENTATION VIOLATION (SEG1)
+    ```
+
+3. Let’s say we have a tiny 16-byte address space in a 128-byte physical memory. What base and bounds would you set up so as to get the simulator to generate the following translation results for the specified address stream: valid, valid, violation, ..., violation, valid, valid? Assume the following parameters:
+    ```
     segmentation.py -a 16 -p 128
       -A 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
       --b0 ? --l0 ? --b1 ? --l1 ?
-4. Assume we want to generate a problem where roughly 90% of the randomly-generated virtual addresses are valid (not segmentation violations). How should you configure the simulator to do so? Which parameters are important to getting this outcome?
-5. Canyourunthesimulatorsuchthatnovirtualaddressesarevalid? How?
+    ```
 
+    - set limit to 2:
+    
+        ```segmentation.py -a 16 -p 128 -A 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15  --l0 2 --l1 2 -c ```
+
+    - set translated address out of physical memory:
+
+        ```segmentation.py -a 16 -p 128 -A 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15  --b0 126 --b1 2 -c ```
+
+        (Above flag is not allowed in this simulator. ```Segment not in physical memmory``` error occurs.)
+
+4. Assume we want to generate a problem where roughly 90% of the randomly-generated virtual addresses are valid (not segmentation violations). How should you configure the simulator to do so? Which parameters are important to getting this outcome?
+
+    Limit parameter is important. For a given address space size, the sum of seg1 and seg2's limit should be ```address_space_size*0.9```. And of course, each limit should not be larger than ```address_space_size/2```.
+
+5. Can you run the simulator such that no virtual addresses are valid? How?
+
+    Set limit size to be 0.
