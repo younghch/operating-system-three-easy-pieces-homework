@@ -179,5 +179,81 @@ to get a complete list of flags and options.
 
 Enjoy!
 
+# Questions
 
+1. First let’s use a tiny address space to translate some addresses. Here’s a simple set of parameters with a few different random seeds; can you translate the addresses?
+    
+    ***valid byte of segment 1 acutllay start from ```segment_1_base-1```***
+    - ```segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512 -L 20 -s 0```
+    ```
+    ARG seed 0
+    ARG address space size 128
+    ARG phys mem size 512
+
+    Segment register information:
+
+      Segment 0 base  (grows positive) : 0x00000000 (decimal 0)
+      Segment 0 limit                  : 20
+
+      Segment 1 base  (grows negative) : 0x00000200 (decimal 512)
+      Segment 1 limit                  : 20
+
+    Virtual Address Trace                   binary address    segment   result
+      VA  0: 0x0000006c (decimal:  108) --> 110 1100          1         seg1 grows negative, offset = 127 - 108 = 19 
+                                                                        valid because offset smaller than limit
+                                                                        translated address = seg1 base - 1 - offset = 492
+      VA  1: 0x00000061 (decimal:   97) --> 110 0001          1         offset = 127 - 97 = 30, segmentation violation
+      VA  2: 0x00000035 (decimal:   53) --> 011 0005          0         offset = 53, segmentation violation
+      VA  3: 0x00000021 (decimal:   33) --> 010 0001          0         offset = 33, segmentation violation
+      VA  4: 0x00000041 (decimal:   65) --> 100 0001          0         offset = 65, segmentation violation
+    ```
+    - ```segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512 -L 20 -s 1```
+    ```
+    ARG seed 1
+    ARG address space size 128
+    ARG phys mem size 512
+
+    Segment register information:
+
+      Segment 0 base  (grows positive) : 0x00000000 (decimal 0)
+      Segment 0 limit                  : 20
+
+      Segment 1 base  (grows negative) : 0x00000200 (decimal 512)
+      Segment 1 limit                  : 20
+
+    Virtual Address Trace                   segment(1 if VA >= 64)    result
+      VA  0: 0x00000011 (decimal:   17) --> 0                         translated address: 17
+      VA  1: 0x0000006c (decimal:  108) --> 1                         offset = 19, translated address: 492
+      VA  2: 0x00000061 (decimal:   97) --> 1                         offset = 30, segmentation violation
+      VA  3: 0x00000020 (decimal:   32) --> 0                         segmentation violation
+      VA  4: 0x0000003f (decimal:   63) --> 0                         segmentation violation
+    ```
+    - ```segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512 -L 20 -s 2```
+    ```
+    ARG seed 2
+    ARG address space size 128
+    ARG phys mem size 512
+
+    Segment register information:
+
+      Segment 0 base  (grows positive) : 0x00000000 (decimal 0)
+      Segment 0 limit                  : 20
+
+      Segment 1 base  (grows negative) : 0x00000200 (decimal 512)
+      Segment 1 limit                  : 20
+
+    Virtual Address Trace                   segment(1 if VA >= 64)    result
+      VA  0: 0x0000007a (decimal:  122) --> 1                         offset = 5, translated address: 506
+      VA  1: 0x00000079 (decimal:  121) --> 1                         offset = 6, translated address: 505
+      VA  2: 0x00000007 (decimal:    7) --> 0                         translated address: 7
+      VA  3: 0x0000000a (decimal:   10) --> 0                         translated address: 10
+      VA  4: 0x0000006a (decimal:  106) --> 1                         offset = 21, segmentation violation
+    ```
+2. Now, let’s see if we understand this tiny address space we’ve con- structed (using the parameters from the question above). What is the highest legal virtual address in segment 0? What about the low- est legal virtual address in segment 1? What are the lowest and highest illegal addresses in this entire address space? Finally, how would you run segmentation.py with the -A flag to test if you are right?
+3. Let’ssaywehaveatiny16-byteaddressspaceina128-bytephysical memory. What base and bounds would you set up so as to get the simulator to generate the following translation results for the specified address stream: valid, valid, violation, ..., violation, valid, valid? Assume the following parameters:
+    segmentation.py -a 16 -p 128
+      -A 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+      --b0 ? --l0 ? --b1 ? --l1 ?
+4. Assume we want to generate a problem where roughly 90% of the randomly-generated virtual addresses are valid (not segmentation violations). How should you configure the simulator to do so? Which parameters are important to getting this outcome?
+5. Canyourunthesimulatorsuchthatnovirtualaddressesarevalid? How?
 
