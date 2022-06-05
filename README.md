@@ -5,6 +5,7 @@
 2. Homework-Simulation: Run simulator and answer to the questions
 3. etc: Random materials I studied myself.
 
+* answers link start with 'Run' is not done yet. still working on
 
 # Virtualization
 
@@ -15,11 +16,11 @@ Chapter | Answers
 [Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | [link](homework-simulation/cpu-sched)
 [MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| [link](homework-simulation/cpu-sched-mlfq)
 [Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | [link](homework-simulation/cpu-sched-lottery)
-[Multiprocessor Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf) | 
+[Multiprocessor Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf) | Run multi.py
 [Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | [link](homework-code/virtualization/address-space)
 [VM API](http://www.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf) | [link](homework-code/virtualization/memory-api)
 [Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | [link](homework-simulation/vm-mechanism)
-[Segmentation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf) | 
+[Segmentation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf) | [link](homework-simulation/vm-segmentation)
 [Free Space](http://www.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf) | Run [malloc.py](vm-freespace)
 [Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf) | Run [paging-linear-translate.py](vm-paging)
 [TLBs](http://www.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf) | 
