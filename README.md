@@ -5,9 +5,10 @@
 2. Homework-Simulation: Run simulator and answer to the questions
 3. etc: Random materials I studied myself.
 
-* answers link start with 'Run' is not done yet. still working on
 
 # Link to the answer of each chapter
+**link start with 'Run' is still working on**
+
 ## Virtualization
 
 Chapter | Link
