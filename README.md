@@ -24,7 +24,7 @@ Chapter | Link
 [Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | [calculate translated address and check valid](homework-simulation/vm-mechanism)
 [Segmentation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf) | [calculate translated address with segmentation](homework-simulation/vm-segmentation)
 [Free Space](http://www.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf) | [calculate and compare best/worst/first fit](homework-simulation/vm-freespace)
-[Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf) | Run [paging-linear-translate.py](vm-paging)
+[Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf) | [work with paging](vm-paging)
 [TLBs](http://www.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf) | 
 [Multi-level Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-smalltables.pdf) | Run [paging-multilevel-translate.py](vm-smalltables)
 [Paging Mechanism](http://www.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys.pdf) | Run [mem.c](vm-beyondphys)
