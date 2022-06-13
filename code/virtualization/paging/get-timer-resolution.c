@@ -5,5 +5,5 @@ int main(void)
 {
     start_timer();
     end_timer();
-    printf("elapsed time in seconds: %lf\nelapsed time in nano seconds: %lu\n", get_elapsed_seconds(), get_elapsed_nano_seconds());
+    printf("elapsed time in seconds: %f\nelapsed time in nano seconds: %lu\n", get_elapsed_seconds(), get_elapsed_nano_seconds());
 }
