@@ -1,8 +1,8 @@
-# Homeworks and practice codes of [Operating System Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/)
+#  and practice codes of [Operating System Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/)
 
 ## About each folder
-1. Homework-Code: Code writing homeworks
-2. Homework-Simulation: Run simulator and answer to the questions
+1. Code: Code writing 
+2. Simulation: Run simulator and answer to the questions
 3. etc: Random materials I studied myself.
 
 
@@ -13,23 +13,23 @@
 
 Chapter | Link
 --------|-----------
-[Process API](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf) | [write some codes to get familiar with process management api](homework-code/virtualization/process-api)
-[Direct Execution](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf) | [measure cost of a system call and context switch](homework-code/virtualization/limited-direct-execution)
-[Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | [compare SJF, FIFO, RR schedulers under various conditions](homework-simulation/cpu-sched)
-[MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| [see how a MLFQ scheduler behaves](homework-simulation/cpu-sched-mlfq)
-[Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | [see how a lottery scheduler works](homework-simulation/cpu-sched-lottery)
+[Process API](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf) | [write some codes to get familiar with process management api](code/virtualization/process-api)
+[Direct Execution](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf) | [measure cost of a system call and context switch](code/virtualization/limited-direct-execution)
+[Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | [compare SJF, FIFO, RR schedulers under various conditions](simulation/cpu-sched)
+[MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| [see how a MLFQ scheduler behaves](simulation/cpu-sched-mlfq)
+[Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | [see how a lottery scheduler works](simulation/cpu-sched-lottery)
 [Multiprocessor Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf) | Run multi.py
-[Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | [examine virtual memory usage on Linux-based systems](homework-code/virtualization/address-space)
-[Memory API](http://www.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf) | [write buggy program and use tools to find the bug](homework-code/virtualization/memory-api)
-[Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | [calculate translated address and check valid](homework-simulation/vm-mechanism)
-[Segmentation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf) | [calculate translated address with segmentation](homework-simulation/vm-segmentation)
-[Free Space](http://www.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf) | [calculate and compare best/worst/first fit](homework-simulation/vm-freespace)
-[Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf) | [work with paging](vm-paging)
-[TLBs](http://www.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf) | 
+[Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | [examine virtual memory usage on Linux-based systems](code/virtualization/address-space)
+[Memory API](http://www.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf) | [write buggy program and use tools to find the bug](code/virtualization/memory-api)
+[Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | [calculate translated address and check valid](simulation/vm-mechanism)
+[Segmentation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf) | [calculate translated address with segmentation](simulation/vm-segmentation)
+[Free Space](http://www.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf) | [calculate and compare best/worst/first fit](simulation/vm-freespace)
+[Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf) | [work with paging](simulation/vm-paging)
+[TLBs](http://www.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf) | [measure size of TLB](code/virtualization/paging)
 [Multi-level Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-smalltables.pdf) | Run [paging-multilevel-translate.py](vm-smalltables)
 [Paging Mechanism](http://www.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys.pdf) | Run [mem.c](vm-beyondphys)
 [Paging Policy](http://www.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf) | Run [paging-policy.py](vm-beyondphys-policy)
-[Complete VM](http://www.cs.wisc.edu/~remzi/OSTEP/vm-complete.pdf) | No homework (yet)
+[Complete VM](http://www.cs.wisc.edu/~remzi/OSTEP/vm-complete.pdf) | No (yet)
 
 ## Concurrency
 
