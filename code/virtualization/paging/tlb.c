@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
             a[i] += 1;
 
     end_timer();
-    printf("%d,%d,%f\n", numpages, trials, get_elapsed_nano_seconds());
-    
+    printf("%d,%d,%f\n", numpages, trials, get_elapsed_seconds());
+
     free(a);
     return 0;
 }
