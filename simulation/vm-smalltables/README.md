@@ -82,12 +82,12 @@ Good luck with this monstrosity!
 # Questions
 1. With a linear page table, you need a single register to locate the page table, assuming that hardware does the lookup upon a TLB miss. How many registers do you need to locate a two-level page table? A three-level table?
 
-  The number of register needed are same to the number of level of page table. 2 for two-level page table, 3 for three-level table.
+    Only top-level page directory base register is needed.
 
 2. Use the simulator to perform translations given random seeds 0, 1, and 2, and check your answers using the -c flag. How many memory references are needed to perform each lookup?
 
-  - seed 0
   ```
+  ARG seed 0
   ARG allocated 64
   ARG num 10
 
@@ -236,3 +236,5 @@ Good luck with this monstrosity!
 
 
 3. Given your understanding of how cache memory works, how do you think memory references to the page table will behave in the cache? Will they lead to lots of cache hits (and thus fast accesses?) Or lots of misses (and thus slow accesses)?
+
+    Memory are accessed locally, this will lead to lots of cache hits. In detail, page directory fits temporal locality because it is accessed at every TLB miss, and page table fits spactial locality. 
