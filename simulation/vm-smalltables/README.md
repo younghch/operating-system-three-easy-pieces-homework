@@ -20,64 +20,11 @@ points to a page of the page table. Each page table page holds 32 page-table ent
 (PTEs). Each PTE, if valid, holds the desired translation (physical frame number, or PFN)
 of the virtual page in question.
 
-The format of a PTE is thus:
-
-```sh
-  VALID | PFN6 ... PFN0
-```
-
-and is thus 8 bits or 1 byte.
-
-The format of a PDE is essentially identical:
-
-```sh
-  VALID | PT6 ... PT0
-```
-
-You are given two pieces of information to begin with.
-
-First, you are given the value of the page directory base register (PDBR),
-which tells you which page the page directory is located upon.
-
-Second, you are given a complete dump of each page of memory. A page dump
-looks like this: 
-
-```sh
-    page 0: 08 00 01 15 11 1d 1d 1c 01 17 15 14 16 1b 13 0b ...
-    page 1: 19 05 1e 13 02 16 1e 0c 15 09 06 16 00 19 10 03 ...
-    page 2: 1d 07 11 1b 12 05 07 1e 09 1a 18 17 16 18 1a 01 ...
-    ...
-```
-
-which shows the 32 bytes found on pages 0, 1, 2, and so forth. The first byte
-(0th byte) on page 0 has the value 0x08, the second is 0x00, the third 0x01,
-and so forth.
-
-You are then given a list of virtual addresses to translate. 
-
 Use the PDBR to find the relevant page table entries for this virtual page. 
 Then find if it is valid. If so, use the translation to form a final physical
 address. Using this address, you can find the VALUE that the memory reference
-is looking for. 
+is looking for. Of course, the virtual address may not be valid and thus generate a fault. [[click to see detail](https://github.com/remzi-arpacidusseau/ostep-homework/tree/master/vm-smalltables)
 
-Of course, the virtual address may not be valid and thus generate a fault.
-
-Some useful options:
-
-```sh
-  -s SEED, --seed=SEED       the random seed
-  -n NUM, --addresses=NUM    number of virtual addresses to generate
-  -c, --solve                compute answers for me
-```
-
-Change the seed to get different problems, as always.
-
-Change the number of virtual addresses generated to do more translations
-for a given memory dump.
-
-Use -c (or --solve) to show the solutions.
-
-Good luck with this monstrosity!
 
 # Questions
 1. With a linear page table, you need a single register to locate the page table, assuming that hardware does the lookup upon a TLB miss. How many registers do you need to locate a two-level page table? A three-level table?
@@ -221,6 +168,8 @@ Good luck with this monstrosity!
   page 127:7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7fdf7f7f7f7f7f7f7f7f7f7f7f7f957f7f
 
   PDBR: 108  (decimal) [This means the page directory is held in this page]
+
+  Answer:
                         PDE idx   PTE idx     OFFSET  PDE contents(valid/PFN) PTE contents(valid/PFN)   Translated Address    Value
   Virtual Address 611c: 11000     01000       11100   a1 (1/0100001)          b5 (1/0110101)            011010111100 (0x6bc)  08
   Virtual Address 3da8: 01111     01101       01000   d6 (1/1010110)          7f (0/1111111) -> Invalid!                      1c
@@ -232,6 +181,8 @@ Good luck with this monstrosity!
   Virtual Address 4c5e: 10011     00010       11110   f8 (1/1111000)          7f (0/1111111) -> Invalid!
   Virtual Address 2592: 01001     01100       10010   9e (1/0011110)          bd (1/0111101)            011110110010 (0x7b2)  1b
   Virtual Address 3e99: 01111     10100       11001   d6 (1/1010110)          ca (1/1001010)            100101011001 (0x959)  1e
+
+  Three memory references are needed for each lookup(PDE contents, PTE contents, value).
   ```
 
 
