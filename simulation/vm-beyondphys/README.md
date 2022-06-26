@@ -114,6 +114,44 @@ Now, we will run the program ```mem.c``` but with very little memory usage. This
 
 5. Now let’s examine performance. Pick an input for mem that comfortably fits in memory (say 4000 if the amount of memory on the system is 8 GB). How long does loop 0 take (and subsequent loops 1, 2, etc.)? Now pick a size comfortably beyond the size of memory (say 12000 again assuming 8 GB of memory). How long do the loops take here? How do the bandwidth numbers compare? How different is performance when constantly swapping versus fitting everything comfortably in memory? Can you make a graph, with the size of memory used by mem on the x-axis, and the bandwidth of accessing said memory on the y-axis? Finally, how does the performance of the first loop compare to that of subsequent loops, for both the case where everything fits in memory and where it doesn’t?
 
+      - When everything fits in memory(```./mem 8000```), the bandwidth is low only for the first loop. Because when allocating the large array right after running the ```mem```, the slow disk I/O operation is needed to swap out process currently running from memory.
+      - When picking a size beyond the size of memory(```./mem 20000```) the virtual memory of process can not fit in memory. This makes frequent swap-in and swap-out to get a page we needed to update, result in low bandwidth during the entire loop. 
+
+      ```
+      ./mem 8000
+
+      allocating 8388608000 bytes (8000.00 MB)
+      number of integers in array: 2097152000
+
+      loop 0 in 3334.34 ms (bandwidth: 2399.28 MB/s)
+      loop 1 in 1172.06 ms (bandwidth: 6825.57 MB/s)
+      loop 2 in 1095.08 ms (bandwidth: 7305.42 MB/s)
+      loop 3 in 1113.10 ms (bandwidth: 7187.13 MB/s)
+      loop 4 in 1114.26 ms (bandwidth: 7179.63 MB/s)
+      loop 5 in 1092.31 ms (bandwidth: 7323.96 MB/s)
+      loop 6 in 1114.16 ms (bandwidth: 7180.28 MB/s)
+      loop 7 in 1089.98 ms (bandwidth: 7339.59 MB/s)
+      loop 8 in 1147.50 ms (bandwidth: 6971.69 MB/s)
+      loop 9 in 1129.40 ms (bandwidth: 7083.41 MB/s)
+      loop 10 in 1121.96 ms (bandwidth: 7130.38 MB/s)
+
+      ./mem 20000
+
+      allocating 20971520000 bytes (20000.00 MB)
+      number of integers in array: 5242880000
+
+      loop 0 in 10388.18 ms (bandwidth: 1925.26 MB/s)
+      loop 1 in 9643.21 ms (bandwidth: 2074.00 MB/s)
+      loop 2 in 12218.95 ms (bandwidth: 1636.80 MB/s)
+      loop 3 in 12269.92 ms (bandwidth: 1630.00 MB/s)
+      loop 4 in 12299.98 ms (bandwidth: 1626.02 MB/s)
+      loop 5 in 12374.08 ms (bandwidth: 1616.28 MB/s)
+      loop 6 in 12444.65 ms (bandwidth: 1607.12 MB/s)
+      loop 7 in 12428.87 ms (bandwidth: 1609.16 MB/s)
+      loop 8 in 12353.13 ms (bandwidth: 1619.02 MB/s)
+      loop 9 in 12462.78 ms (bandwidth: 1604.78 MB/s)
+      loop 10 in 12446.66 ms (bandwidth: 1606.86 MB/s)
+      ```
 
 6. Swap space isn’t infinite. You can use the tool swapon with the -s flag to see how much swap space is available. What happens if you try to run mem with increasingly large values, beyond what seems to be available in swap? At what point does the memory allocation fail?
 
