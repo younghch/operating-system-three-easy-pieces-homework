@@ -26,13 +26,14 @@ def run_locally(count, probability):
         last = cur
     return ','.join(map(str, trace))
 
-def run_on_policies(policies, trace, clock_range = 2):
+def run_on_policies(policies, trace, clock_range = 1):
     for policy in policies:
         params = ['python3', 'paging-policy.py', '-c', '-C', '5', '-a', trace, '-p', policy]
         if policy == 'CLOCK':
-            params.append('-c')
-            for i in range(1, clock_range):
+            params.append('-b')
+            for i in range(1, clock_range+1):
                 params.append(str(i))
+                print(f'clock bits : {i}')
                 run_and_print(policy, params)
                 params.pop()
         else:
@@ -54,7 +55,7 @@ if len(args) == 2:
 elif len(args) == 3:
     run_on_policies(policies, run_locally(int(args[1]), float(args[2])))
 elif len(args) == 4:
-    run_on_policies(policies, run_locally(int(args[1]), float(args[2]), int(args[3])))
+    run_on_policies(policies, run_locally(int(args[1]), float(args[2])), int(args[3]))
 else:
     print("please input two arguments: count, probability")
 

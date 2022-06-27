@@ -236,7 +236,45 @@ and
     hits 638   misses 362   hitrate 63.80
 
    ```
-   LRU shows about 6~7% better performance than random on high locality tasks. Clock is in the middle, and as we increase the numbers of clock bits it's performance get closer to the LRU.
+   LRU shows about 6~7% better performance than random on high locality tasks. The performance of lock algorithm is between LRU and RANDOM's performance. 
+   
+   In my intuition increasing the numbers of clock bits should make CLOCK algorithm's performance get closer to the LRU. But the simulation result is different.
+   ```
+    python3 generate-trace.py CLOCK,LRU 10000 0.8 10
+    
+    clock bits : 1
+    CLOCK
+    hits 6174   misses 3826   hitrate 61.74
+    clock bits : 2
+    CLOCK
+    hits 6185   misses 3815   hitrate 61.85
+    clock bits : 3
+    CLOCK
+    hits 6175   misses 3825   hitrate 61.75
+    clock bits : 4
+    CLOCK
+    hits 6132   misses 3868   hitrate 61.32
+    clock bits : 5
+    CLOCK
+    hits 6225   misses 3775   hitrate 62.25
+    clock bits : 6
+    CLOCK
+    hits 6205   misses 3795   hitrate 62.05
+    clock bits : 7
+    CLOCK
+    hits 6194   misses 3806   hitrate 61.94
+    clock bits : 8
+    CLOCK
+    hits 6136   misses 3864   hitrate 61.36
+    clock bits : 9
+    CLOCK
+    hits 6198   misses 3802   hitrate 61.98
+    clock bits : 10
+    CLOCK
+    hits 6190   misses 3810   hitrate 61.90
+    LRU
+    hits 6377   misses 3623   hitrate 63.77
+   ```
 
 
 5. Use a program like valgrind to instrument a real application and generate a virtual page reference stream. For example, running valgrind --tool=lackey --trace-mem=yes ls will output a nearly-complete reference trace of every instruction and data reference made by the program ls. To make this useful for the simulator above, you’ll have to first transform each virtual memory reference into a virtual page-number reference (done by masking off the offset and shifting the resulting bits downward). How big of a cache is needed for your application trace in order to satisfy a large fraction of requests? Plot a graph of its working set as the size of the cache increases.
