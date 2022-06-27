@@ -29,9 +29,9 @@ Chapter | Link
 [Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf) | [work with paging](simulation/vm-paging)
 [TLBs](http://www.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf) | [measure size of TLB](code/virtualization/paging)
 [Multi-level Paging](http://www.cs.wisc.edu/~remzi/OSTEP/vm-smalltables.pdf) | [translate address for multi-level paging](simulation/vm-smalltables)
-[Paging Mechanism](http://www.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys.pdf) | Run [mem.c](vm-beyondphys)
-[Paging Policy](http://www.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf) | Run [paging-policy.py](vm-beyondphys-policy)
-[Complete VM](http://www.cs.wisc.edu/~remzi/OSTEP/vm-complete.pdf) | No (yet)
+[Paging Mechanism](http://www.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys.pdf) | [measure performance affect of swapping](simulation/vm-beyondphys)
+[Paging Policy](http://www.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf) | [compare paging policies](simulation/vm-beyondphys-policy)
+[Complete VM](http://www.cs.wisc.edu/~remzi/OSTEP/vm-complete.pdf) | No homework
 
 ## Concurrency
 
