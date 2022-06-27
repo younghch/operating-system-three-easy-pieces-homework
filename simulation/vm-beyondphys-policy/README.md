@@ -190,12 +190,53 @@ and
 2. For a cache of size 5, generate worst-case address reference streams for each of the following policies: FIFO, LRU, and MRU (worst-case reference streams cause the most misses possible. For the worst case reference streams, how much bigger of a cache is needed to improve performance dramatically and approach OPT?
 
     - FIFO, LRU: ```paging-policy.py -C 5 -p FFIO/LRU -a 1,2,3,4,5,6,1,2,3,4,5,6``` 
+
         Worst case when looping over the data larger than cache. To improve performance, cache size should be the same with the number of pages in a loop. 
     - MRU:  ```paging-policy.py -C 5 -p MRU -a 1,2,3,4,5,6,5,6,5,6,5```
+
         Worst case when evicted recent page is accessed right after replaced. To improve performance, one more cache is needed for above case.
         
 3. Generate a random trace (use python or perl). How would you expect the different policies to perform on such a trace?
+    
+    run ```./generate-trace.py POLICIES_SEPERATED_BY_COMMA NUMBER_OF_ACCESS```
 
 4. Now generate a trace with some locality. How can you generate such a trace? How does LRU perform on it? How much better than RAND is LRU? How does CLOCK do? How about CLOCK with different numbers of clock bits?
+
+   ```
+   python3 ./generate-trace.py OPT,LRU,CLOCK,RAND 1000 0.8
+
+    try 1:
+    OPT
+    hits 796   misses 204   hitrate 79.60
+    LRU
+    hits 676   misses 324   hitrate 67.60
+    CLOCK
+    hits 663   misses 337   hitrate 66.30
+    RAND
+    hits 626   misses 374   hitrate 62.60
+
+    try 2:
+    OPT
+    hits 778   misses 222   hitrate 77.80
+    LRU
+    hits 648   misses 352   hitrate 64.80
+    CLOCK
+    hits 635   misses 365   hitrate 63.50
+    RAND
+    hits 602   misses 398   hitrate 60.20    
+
+    try 3:
+    OPT
+    hits 781   misses 219   hitrate 78.10
+    LRU
+    hits 668   misses 332   hitrate 66.80
+    CLOCK
+    hits 628   misses 372   hitrate 62.80
+    RAND
+    hits 638   misses 362   hitrate 63.80
+
+   ```
+   LRU shows about 6~7% better performance than random on high locality tasks. Clock is in the middle, and as we increase the numbers of clock bits it's performance get closer to the LRU.
+
 
 5. Use a program like valgrind to instrument a real application and generate a virtual page reference stream. For example, running valgrind --tool=lackey --trace-mem=yes ls will output a nearly-complete reference trace of every instruction and data reference made by the program ls. To make this useful for the simulator above, you’ll have to first transform each virtual memory reference into a virtual page-number reference (done by masking off the offset and shifting the resulting bits downward). How big of a cache is needed for your application trace in order to satisfy a large fraction of requests? Plot a graph of its working set as the size of the cache increases.
