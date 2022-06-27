@@ -134,3 +134,68 @@ and
 ```sh
 ./paging-policy.py -C 4 -a 1,2,3,4,1,2,5,1,2,3,4,5
 ```
+
+# Questions
+
+
+1. Generate random addresses with the following arguments: -s 0 -n 10, -s 1 -n 10, and -s 2 -n 10. Change the policy from FIFO, to LRU, to OPT. Compute whether each access in said address traces are hits or misses.
+    
+    cache size: 3
+
+    - FIFO
+
+    access |  hit or miss  | replaced page | cache    | hit/miss count
+    -------|---------------|---------------|----------|----------------
+    8      |  miss         |  -            | [8]      | 0/1
+    7      |  miss         |  -            | [7, 8]   | 0/2  
+    4      |  miss         |  -            | [4, 7, 8]| 0/3  
+    2      |  miss         |  8            | [2, 4, 7]| 0/4   
+    5      |  miss         |  7            | [5, 2, 4]| 0/5   
+    4      |  hit          |  -            | [5, 2, 4]| 1/5   
+    7      |  miss         |  4            | [7, 5, 2]| 1/6   
+    3      |  miss         |  2            | [3, 7, 5]| 1/7   
+    4      |  miss         |  5            | [4, 3, 7]| 1/8   
+    5      |  miss         |  7            | [5, 4, 3]| 1/9
+
+    - LRU
+
+    access |  hit or miss  | replaced page | cache    | hit/miss count
+    -------|---------------|---------------|----------|----------------
+    8      |  miss         |  -            | [8]      | 0/1
+    7      |  miss         |  -            | [7, 8]   | 0/2  
+    4      |  miss         |  -            | [4, 7, 8]| 0/3  
+    2      |  miss         |  8            | [2, 4, 7]| 0/4   
+    5      |  miss         |  7            | [5, 2, 4]| 0/5   
+    4      |  hit          |  -            | [4, 5, 2]| 1/5   
+    7      |  miss         |  2            | [7, 4, 5]| 1/6   
+    3      |  miss         |  5            | [3, 7, 4]| 1/7   
+    4      |  hit          |  -            | [4, 3, 7]| 2/7   
+    5      |  miss         |  7            | [5, 4, 3]| 2/8   
+
+    - OPT
+
+    access |  hit or miss  | replaced page | cache    | hit/miss count
+    -------|---------------|---------------|----------|----------------
+    8      |  miss         |  -            | [8]      | 0/1
+    7      |  miss         |  -            | [7, 8]   | 0/2  
+    4      |  miss         |  -            | [4, 7, 8]| 0/3  
+    2      |  miss         |  8            | [2, 4, 7]| 0/4   
+    5      |  miss         |  2            | [5, 4, 7]| 0/5   
+    4      |  hit          |  -            | [5, 4, 7]| 1/5   
+    7      |  hit          |  -            | [5, 4, 7]| 2/5   
+    3      |  miss         |  7            | [5, 4, 3]| 2/6   
+    4      |  hit          |  -            | [5, 4, 3]| 3/6   
+    5      |  hit          |  -            | [5, 4, 3]| 4/6  
+
+2. For a cache of size 5, generate worst-case address reference streams for each of the following policies: FIFO, LRU, and MRU (worst-case reference streams cause the most misses possible. For the worst case reference streams, how much bigger of a cache is needed to improve performance dramatically and approach OPT?
+
+    - FIFO, LRU: ```paging-policy.py -C 5 -p FFIO/LRU -a 1,2,3,4,5,6,1,2,3,4,5,6``` 
+        Worst case when looping over the data larger than cache. To improve performance, cache size should be the same with the number of pages in a loop. 
+    - MRU:  ```paging-policy.py -C 5 -p MRU -a 1,2,3,4,5,6,5,6,5,6,5```
+        Worst case when evicted recent page is accessed right after replaced. To improve performance, one more cache is needed for above case.
+        
+3. Generate a random trace (use python or perl). How would you expect the different policies to perform on such a trace?
+
+4. Now generate a trace with some locality. How can you generate such a trace? How does LRU perform on it? How much better than RAND is LRU? How does CLOCK do? How about CLOCK with different numbers of clock bits?
+
+5. Use a program like valgrind to instrument a real application and generate a virtual page reference stream. For example, running valgrind --tool=lackey --trace-mem=yes ls will output a nearly-complete reference trace of every instruction and data reference made by the program ls. To make this useful for the simulator above, you’ll have to first transform each virtual memory reference into a virtual page-number reference (done by masking off the offset and shifting the resulting bits downward). How big of a cache is needed for your application trace in order to satisfy a large fraction of requests? Plot a graph of its working set as the size of the cache increases.
