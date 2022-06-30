@@ -13,7 +13,7 @@
 
 ## Virtualization
 
-Chapter | Link
+Chapter | What is homework about
 --------|-----------
 [Process API](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf) | [write some codes to get familiar with process management api](code/virtualization/process-api)
 [Direct Execution](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf) | [measure cost of a system call and context switch](code/virtualization/limited-direct-execution)
@@ -35,9 +35,9 @@ Chapter | Link
 
 ## Concurrency
 
-Chapter | What To Do
+Chapter | What is homework about
 --------|-----------
-[Threads Intro](http://www.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf) | Run [x86.py](threads-intro)
+[Threads Intro](http://www.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf) | [learn the condition of critical section](simulation/threads-intro)
 [Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf)	| Run [some C code](threads-api)
 [Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| Run [x86.py](threads-locks)
 [Lock Usage](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf) | 
@@ -48,7 +48,7 @@ Chapter | What To Do
 
 ## Persistence
 
-Chapter | What To Do
+Chapter | What is homework about
 --------|-----------
 [Hard Disk Drives](http://www.cs.wisc.edu/~remzi/OSTEP/file-disks.pdf) | 
 [RAID](http://www.cs.wisc.edu/~remzi/OSTEP/file-raid.pdf) | 
