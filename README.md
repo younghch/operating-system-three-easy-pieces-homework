@@ -1,15 +1,9 @@
 #  and practice codes of [Operating System Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/)
 
-## About each folder
-1. Code: Code writing 
-2. Simulation: Run simulator and answer to the questions
-3. etc: Random materials I studied myself.
-
-
 # Link to the answer of each chapter
 **link starts with 'Run' is still working on**
 
-***if you found something wrong with my answer please make pull request or send me an email at [younghch42@gmail.com](malito:younghch42@gmail.com)***
+***if you found something wrong with the answers please make pull request or send me an email at [younghch42@gmail.com](malito:younghch42@gmail.com)***
 
 ## Virtualization
 
@@ -38,7 +32,7 @@ Chapter | What is homework about
 Chapter | What is homework about
 --------|-----------
 [Threads Intro](http://www.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf) | [learn the condition of critical section](simulation/threads-intro)
-[Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf)	| Run [some C code](threads-api)
+[Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf)	| [run some c codes to understand the benefit of using mutex](simulation/threads-api)
 [Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| Run [x86.py](threads-locks)
 [Lock Usage](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf) | 
 [Condition Variables](http://www.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf) | Run [some C code](threads-cv)

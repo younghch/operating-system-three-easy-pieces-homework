@@ -61,7 +61,7 @@ With these programs, you can now answer the questions in the textbook.
 
 6. Let’s next look at ```main-signal.c```. This code uses a variable (done) to signal that the child is done and that the parent can now continue. Why is this code inefficient? (what does the parent end up spending its time doing, particularly if the child thread takes a long time to complete?)
 
-	Context switch would happen after running a amount of useless loop instructions. Using a lock, thread would know it should wait for the variable to be changed by another thread thus making interrupt and fall asleep. More efficient cpu utilization can be done with mutex.
+	For program ```main-signal``` context switch would happen after running a amount of useless loop instructions. Using a mutex and condition, thread would know it should wait for the variable to be changed by another thread. If condition is not satasified thread would unlock the lock and fall asleep, and aqurie lock and proceed the code when condition is satasified. More efficient cpu utilization can be achieved using mutex.
 
 7. Now run helgrind on this program. What does it report? Is the code
 correct?
@@ -107,7 +107,10 @@ correct?
 8. Now look at a slightly modified version of the code, which is found in
 main-signal-cv.c. This version uses a condition variable to do the signaling (and associated lock). Why is this code preferred to the previous version? Is it correctness, or performance, or both?
 
+	This code is preffered more for both. More correctness because we ensure the order of execution, more performance for the same reason described in q6, 
+
 9. Once again run helgrind on main-signal-cv. Does it report any errors?
 
+	No error.
 
 
