@@ -107,7 +107,7 @@ correct?
 8. Now look at a slightly modified version of the code, which is found in
 main-signal-cv.c. This version uses a condition variable to do the signaling (and associated lock). Why is this code preferred to the previous version? Is it correctness, or performance, or both?
 
-	This code is preffered more for both. More correctness because we ensure the order of execution, more performance for the same reason described in q6, 
+	This code is preffered more for both. It is more correctness because we ensure the order of execution. When multiple thread are waiting for a variable to be changed, there could be a case multiple threads break the loop and make interrupt right after they are notified that the variable is changed. They update the variable after they are in critical section, but checking was already done. Consequently multiple threads could be in a critical section. The reaon for more performance is already described in q6. 
 
 9. Once again run helgrind on main-signal-cv. Does it report any errors?
 
