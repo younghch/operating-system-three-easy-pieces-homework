@@ -33,7 +33,7 @@ Chapter | What is homework about
 --------|-----------
 [Threads Intro](http://www.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf) | [learn the condition of critical section](simulation/threads-intro)
 [Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf)	| [run some c codes to understand the benefit of using mutex](simulation/threads-api)
-[Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| Run [x86.py](threads-locks)
+[Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| [Compare various locking algorithms](simulation/threads-locks)
 [Lock Usage](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf) | 
 [Condition Variables](http://www.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf) | Run [some C code](threads-cv)
 [Semaphores](http://www.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf) | Read and write [some code](threads-sema)
