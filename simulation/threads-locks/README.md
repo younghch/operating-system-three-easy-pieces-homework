@@ -406,11 +406,20 @@ to study this race condition and related issues in more depth.
 
 10. Can you control the scheduling (with the -P flag) to “prove” that the code works? What are the different cases you should show hold? Think about mutual exclusion and deadlock avoidance.
 
+   ```./x86.py -p peterson.s -c -M turn,count,flag -R ax,cx -a bx=0,bx=1 -P 00000011111```
 
 11. Now study the code for the ticket lock in ```ticket.s```. Does it match the code in the chapter? Then run with the following flags: ```-a bx=1000,bx=1000``` (causing each thread to loop through the critical section 1000 times). Watch what happens; do the threads spend much time spin-waiting for the lock?
 
+   Yes it matches ticket lock with fetch-and-add instruction. It took 101453 instructions to finish ```./x86.py -p ticket.s -M count -a bx=1000,bx=1000```(2 threads, interrupt frequency 50). Optimal case it tooks 20000 instructions. Most of the time are spent waiting.
+
 12. How does the code behave as you add more threads?
+
+   Still most of the time are spent waiting.
 
 13. Now examine ```yield.s```, in which a yield instruction enables one thread to yield control of the CPU (realistically, this would be an OS primitive, but for the simplicity, we assume an instruction does the task). Find a scenario where ```test-and-set.s``` wastes cycles spinning, but yield.s does not. How many instructions are saved? In what scenarios do these savings arise?
 
+   Running ```./x86.py -p test-and-set.s -a bx=1000,bx=1000``` took 34634 instructions, ```./x86.py -p yield.s -a bx=1000,bx=1000``` took 24001 instructions. These savings arise when interrupt frequency is high and process possing a lock went sleep while the other process waiting for a lock. With ```yield``` there is no waste of cpu spin waiting for interrupt.
+
 14. Finally, examine ```test-and-test-and-set.s```. What does this lock do? What kind of savings does it introduce as compared to test-and-set.s?
+
+   It tests whether mutex is free before ```xchg``` operation. It saves cost of unneccessary writing.
