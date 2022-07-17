@@ -14,20 +14,20 @@
     ```
     running on only one cpu
 
-    number of threads: 1 increase count each: 100000000 total time 0.176572s
-    number of threads: 2 increase count each: 100000000 total time 0.348140s
-    number of threads: 3 increase count each: 100000000 total time 0.508915s
-    number of threads: 4 increase count each: 100000000 total time 0.649342s
+    number of threads: 1 increase count each: 10000000 total time 0.167942s
+    number of threads: 2 increase count each: 10000000 total time 0.326556s
+    number of threads: 3 increase count each: 10000000 total time 0.485321s
+    number of threads: 4 increase count each: 10000000 total time 0.645143s
 
     one thread per cpu
 
-    number of threads: 1 increase count each: 100000000 total time 0.183639s
-    number of threads: 2 increase count each: 100000000 total time 0.332282s
-    number of threads: 3 increase count each: 100000000 total time 0.494497s
-    number of threads: 4 increase count each: 100000000 total time 0.667442s
+    number of threads: 1 increase count each: 10000000 total time 0.168496s
+    number of threads: 2 increase count each: 10000000 total time 1.139014s
+    number of threads: 3 increase count each: 10000000 total time 1.725517s
+    number of threads: 4 increase count each: 10000000 total time 1.971672s
 
     ```
-    4 cpus are available on my laptop. Number of CPUs does not affect the measurements because only one CPU can access the counter each time.
+    4 cpus are available on my laptop. Using multiple CPUs slow down the result because of the cost of context switch.
 
 3. Next,build a version of the sloppy counter. Once again,measure its performance as the number of threads varies, as well as the threshold. Do the numbers match what you see in the chapter?
 
