@@ -10,6 +10,16 @@
 
 2. Now, build a simple concurrent counter and measure how long it takes to increment the counter many times as the number of threads increases. How many CPUs are available on the system you are using? Does this number impact your measurements at all?
 
+    [simple concurrent counter](./concurrent-counter.c)
+    ```
+    time took running 1 threads increaising counter 1000000000 times each: 2.103200s
+    time took running 2 threads increaising counter 1000000000 times each: 4.133584s
+    time took running 3 threads increaising counter 1000000000 times each: 6.184915s
+    time took running 4 threads increaising counter 1000000000 times each: 8.352049s
+
+    ```
+    6 CPUs are availabe on my MacBook Pro. Number of CPUs does not affect the measurements because only one CPU can access the counter each time.
+
 3. Next,build a version of the sloppy counter. Once again,measure its performance as the number of threads varies, as well as the threshold. Do the numbers match what you see in the chapter?
 
 4. Build a version of a linked list that uses hand-over-hand locking [MS04], as cited in the chapter. You should read the paper first to understand how it works, and then implement it. Measure its performance. When does a hand-over-hand list work better than a standard list as shown in the chapter?
