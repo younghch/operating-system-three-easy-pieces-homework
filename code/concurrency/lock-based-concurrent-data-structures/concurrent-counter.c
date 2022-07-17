@@ -24,10 +24,11 @@ void init(counter_t *counter) {
 }
 
 void increment(counter_t *counter, int loop){
-    assert(pthread_mutex_lock(&counter->lock) == 0);
-	for (int i = 0; i < loop; i++)
-		counter->value++;
-    assert(pthread_mutex_unlock(&counter->lock) == 0);
+	for (int i = 0; i < loop; i++) {
+        assert(pthread_mutex_lock(&counter->lock) == 0);
+    	counter->value++;
+        assert(pthread_mutex_unlock(&counter->lock) == 0);
+    }
 }
 
 void *worker(void *args) {
