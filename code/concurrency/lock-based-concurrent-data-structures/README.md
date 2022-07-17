@@ -12,13 +12,22 @@
 
     [simple concurrent counter](./concurrent-counter.c)
     ```
-    time took running 1 threads increaising counter 1000000000 times each: 2.103200s
-    time took running 2 threads increaising counter 1000000000 times each: 4.133584s
-    time took running 3 threads increaising counter 1000000000 times each: 6.184915s
-    time took running 4 threads increaising counter 1000000000 times each: 8.352049s
+    running on only one cpu
+
+    number of threads: 1 increase count each: 100000000 total time 0.176572s
+    number of threads: 2 increase count each: 100000000 total time 0.348140s
+    number of threads: 3 increase count each: 100000000 total time 0.508915s
+    number of threads: 4 increase count each: 100000000 total time 0.649342s
+
+    one thread per cpu
+
+    number of threads: 1 increase count each: 100000000 total time 0.183639s
+    number of threads: 2 increase count each: 100000000 total time 0.332282s
+    number of threads: 3 increase count each: 100000000 total time 0.494497s
+    number of threads: 4 increase count each: 100000000 total time 0.667442s
 
     ```
-    6 CPUs are availabe on my MacBook Pro. Number of CPUs does not affect the measurements because only one CPU can access the counter each time.
+    4 cpus are available on my laptop. Number of CPUs does not affect the measurements because only one CPU can access the counter each time.
 
 3. Next,build a version of the sloppy counter. Once again,measure its performance as the number of threads varies, as well as the threshold. Do the numbers match what you see in the chapter?
 
