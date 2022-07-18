@@ -14,18 +14,18 @@
     ```
     running on only one cpu
 
-    number of threads: 1 increase count each: 10000000 total time 0.167942s
-    number of threads: 2 increase count each: 10000000 total time 0.326556s
-    number of threads: 3 increase count each: 10000000 total time 0.485321s
-    number of threads: 4 increase count each: 10000000 total time 0.645143s
+    number of threads: 1, total increase count: 12000000, total time 0.198736s, final value : 12000000
+    number of threads: 2, total increase count: 12000000, total time 0.200319s, final value : 12000000
+    number of threads: 3, total increase count: 12000000, total time 0.211258s, final value : 12000000
+    number of threads: 4, total increase count: 12000000, total time 0.201875s, final value : 12000000
+
 
     one thread per cpu
 
-    number of threads: 1 increase count each: 10000000 total time 0.168496s
-    number of threads: 2 increase count each: 10000000 total time 1.139014s
-    number of threads: 3 increase count each: 10000000 total time 1.725517s
-    number of threads: 4 increase count each: 10000000 total time 1.971672s
-
+    number of threads: 1, total increase count: 12000000, total time 0.211998s, final value : 12000000
+    number of threads: 2, total increase count: 12000000, total time 0.580595s, final value : 12000000
+    number of threads: 3, total increase count: 12000000, total time 0.486172s, final value : 12000000
+    number of threads: 4, total increase count: 12000000, total time 0.568907s, final value : 12000000
     ```
     4 cpus are available on my laptop. Using multiple CPUs slow down the result because of the cost of context switch.
 

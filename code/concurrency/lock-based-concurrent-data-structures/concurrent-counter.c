@@ -66,7 +66,7 @@ int		main(int argc, char *argv[])
 
 	init(&counter);
     w_args.counter = &counter;
-    w_args.count = count;
+    w_args.count = count / num_of_threads;
 
     start_timer();
 	for (int i = 0; i < num_of_threads; i++)
@@ -85,5 +85,11 @@ int		main(int argc, char *argv[])
 		pthread_join(threads[i], NULL);
     end_timer();
     printf(one_thread_per_cpu == 1 ? "one thread per cpu\n" : "running on only one cpu\n");
-    printf("number of threads: %d increase count each: %d total time %fs\n", num_of_threads, count, get_elapsed_seconds());
+    printf("number of threads: %d, total increase count: %d, total time %fs, final value : %d\n", num_of_threads, count, get_elapsed_seconds(), counter.value);
+    
+    free(threads);
+    for (int i = 0; i < num_of_threads; i++)
+        pthread_attr_destroy(thread_attrs+i);
+    free(thread_attrs);
+    free(cpu_sets);
 }
