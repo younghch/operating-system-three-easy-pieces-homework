@@ -67,8 +67,6 @@ int		main(int argc, char *argv[])
 	init(&counter);
     w_args.counter = &counter;
     w_args.count = count / num_of_threads;
-
-    start_timer();
 	for (int i = 0; i < num_of_threads; i++)
     {
         CPU_ZERO(cpu_sets+i);
@@ -79,8 +77,11 @@ int		main(int argc, char *argv[])
         else
             // bind thread to first cpu
             pthread_attr_setaffinity_np(thread_attrs+i, sizeof(cpu_set_t), cpu_sets);
-        pthread_create(threads+i, thread_attrs+i, worker, &w_args);
     }
+
+    start_timer();
+	for (int i = 0; i < num_of_threads; i++)
+        pthread_create(threads+i, thread_attrs+i, worker, &w_args);
     for (int i = 0; i < num_of_threads; i++)
 		pthread_join(threads[i], NULL);
     end_timer();

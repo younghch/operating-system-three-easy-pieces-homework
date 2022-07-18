@@ -31,6 +31,52 @@
 
 3. Next,build a version of the sloppy counter. Once again,measure its performance as the number of threads varies, as well as the threshold. Do the numbers match what you see in the chapter?
 
+
+    ```
+    bash ./run-sloppy-counter.sh
+
+    threshold : 1
+    threads: 1   time: 0.427456s    global: 12000000
+    threads: 2   time: 1.278762s    global: 12000000
+    threads: 3   time: 1.035457s    global: 12000000
+    threads: 4   time: 1.378785s    global: 12000000
+
+    threshold : 8
+    threads: 1   time: 0.251333s    global: 12000000
+    threads: 2   time: 0.960590s    global: 12000000
+    threads: 3   time: 0.893054s    global: 12000000
+    threads: 4   time: 0.961532s    global: 12000000
+
+    threshold : 64
+    threads: 1   time: 0.229729s    global: 12000000
+    threads: 2   time: 0.785679s    global: 12000000
+    threads: 3   time: 0.693660s    global: 12000000
+    threads: 4   time: 0.811846s    global: 12000000
+
+    threshold : 512
+    threads: 1   time: 0.227643s    global: 11999744
+    threads: 2   time: 0.904062s    global: 11999232
+    threads: 3   time: 0.774055s    global: 11999232
+    threads: 4   time: 0.792479s    global: 11999232
+
+    threshold : 16384
+    threads: 1   time: 0.226493s    global: 11993088
+    threads: 2   time: 0.922105s    global: 11993088
+    threads: 3   time: 0.760279s    global: 11993088
+    threads: 4   time: 0.753972s    global: 11993088
+
+    threshold : 131072
+    threads: 1   time: 0.228227s    global: 11927552
+    threads: 2   time: 0.870274s    global: 11796480
+    threads: 3   time: 0.679693s    global: 11796480
+    threads: 4   time: 0.769445s    global: 11534336
+
+    threshold : 1048576
+    threads: 1   time: 0.226977s    global: 11534336
+    threads: 2   time: 0.857633s    global: 10485760
+    threads: 3   time: 0.679236s    global: 9437184
+    threads: 4   time: 0.737452s    global: 8388608
+    ```
 4. Build a version of a linked list that uses hand-over-hand locking [MS04], as cited in the chapter. You should read the paper first to understand how it works, and then implement it. Measure its performance. When does a hand-over-hand list work better than a standard list as shown in the chapter?
 
 5. Pick your favorite data structure, such as a B-tree or other slightly more interesting structure. Implement it, and start with a simple locking strategy such as a single lock. Measure its performance as the number of concurrent threads increases.

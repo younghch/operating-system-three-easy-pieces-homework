@@ -105,17 +105,18 @@ int		main(int argc, char *argv[])
         worker_params_init(w_args+i, &counter, count/num_of_threads, i);
         pthread_attr_init(thread_attrs+i);
     }
+	for (int i = 0; i < num_of_threads; i++)
+        pthread_attr_setaffinity_np(thread_attrs+i%num_of_cpus, sizeof(cpu_set_t), cpu_sets+i);
+
     start_timer();
 	for (int i = 0; i < num_of_threads; i++)
-    {
-        int cpu_id = i%num_of_cpus;
-        pthread_attr_setaffinity_np(thread_attrs+cpu_id, sizeof(cpu_set_t), cpu_sets+i);
-        pthread_create(threads+i, thread_attrs+cpu_id, worker, w_args+cpu_id);
-    }
+        pthread_create(threads+i, thread_attrs+i%num_of_cpus, worker, w_args+i%num_of_cpus);
     for (int i = 0; i < num_of_threads; i++)
 		pthread_join(threads[i], NULL);
     end_timer();
-    printf("number of threads: %d, total increase count: %d, total time %fs, global value : %d\n", num_of_threads, count, get_elapsed_seconds(), get_value(&counter));
+
+    if (num_of_threads == 1) printf("\nthreshold : %d\n", threshold);
+    printf("threads: %d   time: %fs    global: %d\n", num_of_threads, get_elapsed_seconds(), get_value(&counter));
 
     for (int i=0; i < num_of_cpus; i++)
         pthread_attr_destroy(thread_attrs+i);
