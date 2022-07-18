@@ -29,10 +29,10 @@ void init(counter_t *counter, int threshold) {
     counter->threshold = threshold;
     counter->num_of_cpu = sysconf(_SC_NPROCESSORS_CONF);
     counter->global_value = 0;
-    assert(pthread_mutex_init(&counter->global_lock, NULL) == 0);
     counter->local_values = malloc(sizeof(int)*counter->num_of_cpu);
     counter->local_locks = malloc(sizeof(pthread_mutex_t)*counter->num_of_cpu);
     assert(counter->local_values != NULL && counter->local_locks != NULL);
+    assert(pthread_mutex_init(&counter->global_lock, NULL) == 0);
     for (int i=0; i < counter->num_of_cpu; i++){
         assert(pthread_mutex_init(counter->local_locks+i, NULL) == 0);
         counter->local_values[i] = 0;
@@ -41,13 +41,13 @@ void init(counter_t *counter, int threshold) {
 
 void increment(counter_t *counter, int cpu_id) {
     assert(pthread_mutex_lock(counter->local_locks+cpu_id) == 0);
+	counter->local_values[cpu_id]++;
     if (counter->local_values[cpu_id] >= counter->threshold){
         assert(pthread_mutex_lock(&counter->global_lock) == 0);
         counter->global_value += counter->local_values[cpu_id];
         assert(pthread_mutex_unlock(&counter->global_lock) == 0);
         counter->local_values[cpu_id] = 0;
     }
-	counter->local_values[cpu_id]++;
     assert(pthread_mutex_unlock(counter->local_locks+cpu_id) == 0);
 }
 
@@ -65,7 +65,7 @@ void *worker(void *args) {
     return NULL;
 }
 
-void worker_arguments_init(worker_params *w_args, counter_t *counter, int count, int cpu_id){
+void worker_params_init(worker_params *w_args, counter_t *counter, int count, int cpu_id){
     w_args->counter = counter;
     w_args->count = count;
     w_args->cpu_id = cpu_id;
@@ -73,7 +73,7 @@ void worker_arguments_init(worker_params *w_args, counter_t *counter, int count,
 
 int		main(int argc, char *argv[]) 
 {
-    int             max_num_of_cpu;
+    int             num_of_cpus;
     int			    num_of_threads;
     int			    count;
     int             threshold;
@@ -88,34 +88,42 @@ int		main(int argc, char *argv[])
         return -1;
     }
 
-    max_num_of_cpu = sysconf(_SC_NPROCESSORS_CONF);
+    num_of_cpus = sysconf(_SC_NPROCESSORS_CONF);
     num_of_threads= atoi(argv[1]);
     count = atoi(argv[2]);
     threshold = atoi(argv[3]);
     threads = malloc(sizeof(pthread_t)*num_of_threads);
-    thread_attrs = malloc(sizeof(pthread_attr_t)*max_num_of_cpu);
-    cpu_sets = malloc(sizeof(cpu_set_t)*max_num_of_cpu);
-    w_args = malloc(sizeof(w_args)*max_num_of_cpu);
+    thread_attrs = malloc(sizeof(pthread_attr_t)*num_of_cpus);
+    cpu_sets = malloc(sizeof(cpu_set_t)*num_of_cpus);
+    w_args = malloc(sizeof(worker_params)*num_of_cpus);
     assert(threads != NULL && thread_attrs != NULL && cpu_sets != NULL);
 
 	init(&counter, threshold);
-
-    for (int i = 0; i < max_num_of_cpu; i++){
+    for (int i = 0; i < num_of_cpus; i++){
         CPU_ZERO(cpu_sets+i);
         CPU_SET(i, cpu_sets+i);
+        worker_params_init(w_args+i, &counter, count/num_of_threads, i);
         pthread_attr_init(thread_attrs+i);
     }
     start_timer();
 	for (int i = 0; i < num_of_threads; i++)
     {
-        int cpu_id = i%max_num_of_cpu;
+        int cpu_id = i%num_of_cpus;
         pthread_attr_setaffinity_np(thread_attrs+cpu_id, sizeof(cpu_set_t), cpu_sets+i);
-        worker_arguments_init(w_args+cpu_id, &counter, count, cpu_id);
         pthread_create(threads+i, thread_attrs+cpu_id, worker, w_args+cpu_id);
+        pthread_create(threads+i, NULL, worker, &w_args[cpu_id]);
     }
     for (int i = 0; i < num_of_threads; i++)
 		pthread_join(threads[i], NULL);
     end_timer();
-    printf("number of threads: %d increase count each: %d total time %fs\n", num_of_threads, count, get_elapsed_seconds());
-    printf("final value : %d \n", counter.global_value);
+    printf("number of threads: %d, total increase count: %d, total time %fs, global value : %d\n", num_of_threads, count, get_elapsed_seconds(), get_value(&counter));
+
+    for (int i=0; i < num_of_cpus; i++)
+        pthread_attr_destroy(thread_attrs+i);
+    free(threads);
+    free(thread_attrs);
+    free(counter.local_values);
+    free(counter.local_locks);
+    free(cpu_sets);
+    free(w_args);
 }
