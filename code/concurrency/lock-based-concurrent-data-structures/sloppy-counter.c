@@ -111,7 +111,6 @@ int		main(int argc, char *argv[])
         int cpu_id = i%num_of_cpus;
         pthread_attr_setaffinity_np(thread_attrs+cpu_id, sizeof(cpu_set_t), cpu_sets+i);
         pthread_create(threads+i, thread_attrs+cpu_id, worker, w_args+cpu_id);
-        pthread_create(threads+i, NULL, worker, &w_args[cpu_id]);
     }
     for (int i = 0; i < num_of_threads; i++)
 		pthread_join(threads[i], NULL);
