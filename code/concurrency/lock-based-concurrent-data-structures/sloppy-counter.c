@@ -15,8 +15,6 @@ typedef struct __counter_t {
     pthread_mutex_t global_lock;
     int             *local_values;
     pthread_mutex_t *local_locks;
-
-    
 } counter_t;
 
 typedef struct __worker_params {
