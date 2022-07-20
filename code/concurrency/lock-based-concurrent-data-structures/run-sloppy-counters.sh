@@ -10,14 +10,13 @@ THREADS_RANGE=$(seq 4)
 COUNT=12000000
 EXPONENT=0
 THREASHOLD=1
-# SLOPPY_COUNTER=./sloppy.out
 SLOPPY_COUNTER=./sloppy-counter.out
 
 while [ $EXPONENT -le 21 ]
 do
 	for THREADS in $THREADS_RANGE
 		do
-			$SLOPPY_COUNTER $THREADS $COUNT $THREASHOLD >> sloppy_counter3.test
+			$SLOPPY_COUNTER $THREADS $COUNT $THREASHOLD >> sloppy_counter.test
 		done
 	((THREASHOLD*=2))
 	((EXPONENT++))
