@@ -87,8 +87,283 @@
 
 4. Build a version of a linked list that uses hand-over-hand locking [MS04](http://people.csail.mit.edu/shanir/publications/concurrent-data-structures.pdf), as cited in the chapter. You should read the paper first to understand how it works, and then implement it. Measure its performance. When does a hand-over-hand list work better than a standard list as shown in the chapter?
 
-    hand-over-hand list: each node has an associated lock. A thread traversing the linked list releases a node’s lock only after acquiring the lock of the next node in the list, thus preventing overtaking which may cause unnoticed removal of a node. This approach reduces lock granularity but significantly limits concurrency because insertions and deletions at disjoint list locations may delay each other.
-    
+    It seems the cost of locking and unlocking nodes are higher than the benefit of being able to parallel access the list.
+
+    ```
+    ===========================================
+    list size: 1024
+    number of threads: 1
+    num_of_search: 64
+
+    linear search for hand-over-hand list
+    time: 0.003212s
+
+    linear search for concurrent-linked list
+    time: 0.000947s
+
+    random search for hand-over-hand list
+    time: 0.001901s
+
+    random search for concurrent-linked list
+    time: 0.000496s
+
+    ===========================================
+    list size: 1024
+    number of threads: 2
+    num_of_search: 64
+
+    linear search for hand-over-hand list
+    time: 0.002688s
+
+    linear search for concurrent-linked list
+    time: 0.001035s
+
+    random search for hand-over-hand list
+    time: 0.001330s
+
+    random search for concurrent-linked list
+    time: 0.000650s
+
+    ===========================================
+    list size: 1024
+    number of threads: 4
+    num_of_search: 64
+
+    linear search for hand-over-hand list
+    time: 0.002052s
+
+    linear search for concurrent-linked list
+    time: 0.001054s
+
+    random search for hand-over-hand list
+    time: 0.002886s
+
+    random search for concurrent-linked list
+    time: 0.000668s
+
+    ===========================================
+    list size: 1024
+    number of threads: 8
+    num_of_search: 64
+
+    linear search for hand-over-hand list
+    time: 0.002776s
+
+    linear search for concurrent-linked list
+    time: 0.001257s
+
+    random search for hand-over-hand list
+    time: 0.001202s
+
+    random search for concurrent-linked list
+    time: 0.000705s
+
+    ===========================================
+    list size: 4096
+    number of threads: 1
+    num_of_search: 256
+
+    linear search for hand-over-hand list
+    time: 0.029648s
+
+    linear search for concurrent-linked list
+    time: 0.004945s
+
+    random search for hand-over-hand list
+    time: 0.008480s
+
+    random search for concurrent-linked list
+    time: 0.002360s
+
+    ===========================================
+    list size: 4096
+    number of threads: 2
+    num_of_search: 256
+
+    linear search for hand-over-hand list
+    time: 0.011836s
+
+    linear search for concurrent-linked list
+    time: 0.005291s
+
+    random search for hand-over-hand list
+    time: 0.006183s
+
+    random search for concurrent-linked list
+    time: 0.003031s
+
+    ===========================================
+    list size: 4096
+    number of threads: 4
+    num_of_search: 256
+
+    linear search for hand-over-hand list
+    time: 0.008519s
+
+    linear search for concurrent-linked list
+    time: 0.005487s
+
+    random search for hand-over-hand list
+    time: 0.003664s
+
+    random search for concurrent-linked list
+    time: 0.002832s
+
+    ===========================================
+    list size: 4096
+    number of threads: 8
+    num_of_search: 256
+
+    linear search for hand-over-hand list
+    time: 0.010884s
+
+    linear search for concurrent-linked list
+    time: 0.005642s
+
+    random search for hand-over-hand list
+    time: 0.004743s
+
+    random search for concurrent-linked list
+    time: 0.002794s
+
+    ===========================================
+    list size: 16384
+    number of threads: 1
+    num_of_search: 1024
+
+    linear search for hand-over-hand list
+    time: 0.263199s
+
+    linear search for concurrent-linked list
+    time: 0.072389s
+
+    random search for hand-over-hand list
+    time: 0.136327s
+
+    random search for concurrent-linked list
+    time: 0.037049s
+
+    ===========================================
+    list size: 16384
+    number of threads: 2
+    num_of_search: 1024
+
+    linear search for hand-over-hand list
+    time: 0.142742s
+
+    linear search for concurrent-linked list
+    time: 0.077089s
+
+    random search for hand-over-hand list
+    time: 0.078758s
+
+    random search for concurrent-linked list
+    time: 0.039959s
+
+    ===========================================
+    list size: 16384
+    number of threads: 4
+    num_of_search: 1024
+
+    linear search for hand-over-hand list
+    time: 0.084757s
+
+    linear search for concurrent-linked list
+    time: 0.084834s
+
+    random search for hand-over-hand list
+    time: 0.047958s
+
+    random search for concurrent-linked list
+    time: 0.042764s
+
+    ===========================================
+    list size: 16384
+    number of threads: 8
+    num_of_search: 1024
+
+    linear search for hand-over-hand list
+    time: 0.100742s
+
+    linear search for concurrent-linked list
+    time: 0.083336s
+
+    random search for hand-over-hand list
+    time: 0.061781s
+
+    random search for concurrent-linked list
+    time: 0.042696s
+
+    ===========================================
+    list size: 65536
+    number of threads: 1
+    num_of_search: 4096
+
+    linear search for hand-over-hand list
+    time: 4.310899s
+
+    linear search for concurrent-linked list
+    time: 1.619928s
+
+    random search for hand-over-hand list
+    time: 2.162882s
+
+    random search for concurrent-linked list
+    time: 0.698931s
+
+    ===========================================
+    list size: 65536
+    number of threads: 2
+    num_of_search: 4096
+
+    linear search for hand-over-hand list
+    time: 2.368641s
+
+    linear search for concurrent-linked list
+    time: 1.737049s
+
+    random search for hand-over-hand list
+    time: 1.162360s
+
+    random search for concurrent-linked list
+    time: 0.717006s
+
+    ===========================================
+    list size: 65536
+    number of threads: 4
+    num_of_search: 4096
+
+    linear search for hand-over-hand list
+    time: 1.269051s
+
+    linear search for concurrent-linked list
+    time: 1.826516s
+
+    random search for hand-over-hand list
+    time: 0.632811s
+
+    random search for concurrent-linked list
+    time: 0.791201s
+
+    ===========================================
+    list size: 65536
+    number of threads: 8
+    num_of_search: 4096
+
+    linear search for hand-over-hand list
+    time: 1.368692s
+
+    linear search for concurrent-linked list
+    time: 1.813958s
+
+    random search for hand-over-hand list
+    time: 0.852183s
+
+    random search for concurrent-linked list
+    time: 0.780220s
+    ```
+
+
 5. Pick your favorite data structure, such as a B-tree or other slightly more interesting structure. Implement it, and start with a simple locking strategy such as a single lock. Measure its performance as the number of concurrent threads increases.
 
 6. Finally, think of a more interesting locking strategy for this favorite data structure of yours. Implement it, and measure its performance. How does it compare to the straightforward locking approach?
