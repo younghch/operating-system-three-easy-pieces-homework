@@ -1,12 +1,14 @@
-# include <pthread.h>
-# include "hand-over-hand.h"
+#include <pthread.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "hand-over-hand.h"
 
-void    list_init(hand_over_hand_list_t *l)
+void    hand_over_hand_list_init(hand_over_hand_list_t *l)
 {
     l->head = NULL;
 }
 
-void     list_insert(hand_over_hand_list_t *l, int key)
+void     hand_over_hand_list_insert(hand_over_hand_list_t *l, int key)
 {
     hand_over_hand_node_t   *new;
 
@@ -24,7 +26,7 @@ void     list_insert(hand_over_hand_list_t *l, int key)
     pthread_mutex_unlock(&l->lock);
 }
 
-int     list_lookup(hand_over_hand_list_t *l, int key)
+int     hand_over_hand_list_lookup(hand_over_hand_list_t *l, int key)
 {
     int                     rv;
     hand_over_hand_node_t   *cur;
@@ -37,13 +39,13 @@ int     list_lookup(hand_over_hand_list_t *l, int key)
     {
         pthread_mutex_lock(&cur->lock);
         if (prev) pthread_mutex_unlock(&prev->lock);
-        if (cur->key == key)
+        prev = cur;
+        cur = cur->next;
+        if (prev->key == key)
         {
             rv = 0;
             break;
         }
-        prev = cur;
-        cur = cur->next;
     }
     pthread_mutex_unlock(&prev->lock);
     return rv;

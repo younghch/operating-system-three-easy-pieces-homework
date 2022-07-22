@@ -13,8 +13,8 @@ typedef struct __hand_over_hand_list_t
     pthread_mutex_t lock;
 } hand_over_hand_list_t;
 
-void    list_init(hand_over_hand_list_t *l);
+void    hand_over_hand_list_init(hand_over_hand_list_t *l);
 
-void    list_insert(hand_over_hand_list_t *l, int key);
+void    hand_over_hand_list_insert(hand_over_hand_list_t *l, int key);
 
-int     list_lookup(hand_over_hand_list_t *l, int key);
+int     hand_over_hand_list_lookup(hand_over_hand_list_t *l, int key);

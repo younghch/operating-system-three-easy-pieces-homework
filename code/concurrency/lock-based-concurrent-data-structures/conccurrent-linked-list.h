@@ -12,6 +12,6 @@ typedef struct __concurrent_list_t
     pthread_mutex_t lock;
 } concurrent_list_t;
 
-void    list_init(concurrent_list_t *l);
-void    list_insert(concurrent_list_t *l, int key);
-int     list_lookup(concurrent_list_t *l, int key);
+void    concurrent_list_init(concurrent_list_t *l);
+void    concurrent_list_insert(concurrent_list_t *l, int key);
+int     concurrent_list_lookup(concurrent_list_t *l, int key);

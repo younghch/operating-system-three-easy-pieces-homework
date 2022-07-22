@@ -1,13 +1,15 @@
-# include <pthread.h>
-# include "conccurrent-linked-list.h"
+#include <pthread.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "conccurrent-linked-list.h"
 
-void    list_init(concurrent_list_t *l)
+void    concurrent_list_init(concurrent_list_t *l)
 {
     l->head = NULL;
     pthread_mutex_init(&l->lock, NULL);
 }
 
-void     list_insert(concurrent_list_t *l, int key)
+void     concurrent_list_insert(concurrent_list_t *l, int key)
 {
     concurent_node_t  *new;
 
@@ -24,7 +26,7 @@ void     list_insert(concurrent_list_t *l, int key)
     pthread_mutex_unlock(&l->lock);
 }
 
-int     list_lookup(concurrent_list_t *l, int key)
+int     concurrent_list_lookup(concurrent_list_t *l, int key)
 {
     int     rv;
     concurent_node_t  *cur;
