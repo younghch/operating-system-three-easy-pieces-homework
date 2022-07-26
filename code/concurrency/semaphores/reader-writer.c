@@ -58,6 +58,7 @@ void *reader(void *arg) {
     for (i = 0; i < loops; i++) {
 	rwlock_acquire_readlock(&lock);
 	printf("read %d\n", value);
+    // sleep(1);    uncomment to starve writer
 	rwlock_release_readlock(&lock);
     }
     return NULL;
