@@ -35,12 +35,9 @@ void barrier(barrier_t *b) {
     b->num_left--;
     Sem_post(&b->mutex);
     if (b->num_left == 0)
-    {
-        for (int i = 1; i < b->num_threads; i++)
-            Sem_post(&b->ready);
-    }
-    else
-        Sem_wait(&b->ready);
+        Sem_post(&b->ready);
+    Sem_wait(&b->ready);
+    Sem_post(&b->ready);
 }
 
 //
