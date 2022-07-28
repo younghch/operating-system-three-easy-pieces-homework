@@ -114,6 +114,9 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < num_lates; i++)
 	    Pthread_join(lates[i], NULL);
     printf("parent: end\n");
+    free(firsts);
+    free(lates);
+    free(w_args);
     return 0;
 }
 
