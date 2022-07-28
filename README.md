@@ -36,7 +36,7 @@ Chapter | What is homework about
 [Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| [Compare various locking algorithms](simulation/threads-locks)
 [Lock Usage](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf) | [Build concurrent data structures and measure its performance](code/concurrency/lock-based-concurrent-data-structures)
 [Condition Variables](http://www.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf) | [Learn the right usage of condition variables](simulation/threads-cv)
-[Semaphores](http://www.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf) | Read and write [some code](threads-sema)
+[Semaphores](http://www.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf) | [Work with semaphores](code/concurrency/semaphores)
 [Concurrency Bugs](http://www.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf) | Run [some C code](threads-bugs)
 [Event-based Concurrency](http://www.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf) | 
 
