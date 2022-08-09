@@ -164,7 +164,50 @@ Each program takes the same set of arguments (see main-common.c for details):
 
 8. Now let’s look at ```vector-avoid-hold-and-wait.c```. What is the main problem with this approach? How does its performance compare to the other versions, when running both with -p and without it?
 
-    
-9. Finally, let’s look at vector-nolock.c. This version doesn’t use locks at all; does it provide the exact same semantics as the other versions? Why or why not?
+    It shows poor performance with the ```-p``` flag because pararell processing is not possible because of the global lock.
+    ```
+    ./vector-avoid-hold-and-wait -t -n 2 -l 100000 -d
+    Time: 0.06 seconds
+    ./vector-avoid-hold-and-wait -t -n 4 -l 50000 -d 
+    Time: 0.49 seconds
+    ./vector-avoid-hold-and-wait -t -n 8 -l 25000 -d
+    Time: 0.55 seconds
+    ./vector-avoid-hold-and-wait -t -n 16 -l 12500 -d
+    Time: 0.56 seconds
 
-10. Nowcompareitsperformancetotheotherversions,bothwhenthreadsare working on the same two vectors (no -p) and when each thread is working on separate vectors (-p). How does this no-lock version perform?
+    ./vector-avoid-hold-and-wait -t -n 2 -l 10000000 -d -p
+    Time: 3.93 seconds
+    ./vector-avoid-hold-and-wait -t -n 4 -l 5000000 -d -p 
+    Time: 4.39 seconds
+    ./vector-avoid-hold-and-wait -t -n 8 -l 2500000 -d -p
+    Time: 4.61 seconds
+    ./vector-avoid-hold-and-wait -t -n 16 -l 1250000 -d -p
+    Time: 4.60 seconds
+    ```
+
+9. Finally, let’s look at ```vector-nolock.c```. This version doesn’t use locks at all; does it provide the exact same semantics as the other versions? Why or why not?
+
+    Yes, it provides the same as the other versions. If fetch and add instruction is done atomically there is no need of using locks.
+
+10. Now compare its performance to the other versions, both when threads are working on the same two vectors (no ```-p```) and when each thread is working on separate vectors (-p). How does this no-lock version perform?
+
+    This version has the best performance.
+    ```
+    ./vector-nolock -t -n 2 -l 100000 -d
+    Time: 0.41 seconds
+    ./vector-nolock -t -n 4 -l 50000 -d 
+    Time: 0.31 seconds
+    ./vector-nolock -t -n 8 -l 25000 -d
+    Time: 0.26 seconds
+    ./vector-nolock -t -n 16 -l 12500 -d
+    Time: 0.25 seconds
+
+    ./vector-nolock -t -n 2 -l 1000000 -d -p
+    Time: 0.54 seconds
+    ./vector-nolock -t -n 4 -l 500000 -d -p 
+    Time: 0.33 seconds
+    ./vector-nolock -t -n 8 -l 250000 -d -p 
+    Time: 0.22 seconds
+    ./vector-nolock -t -n 16 -l 125000 -d -p
+    Time: 0.22 seconds
+    ```
