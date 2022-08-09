@@ -61,9 +61,11 @@ Each program takes the same set of arguments (see main-common.c for details):
 
     No dead lock occurs only when there is only one thread.
 
-4. Now examine the code invector-global-order.c.First,makesureyou understand what the code is trying to do; do you understand why the code avoids deadlock? Also, why is there a special case in this vector add() routine when the source and destination vectors are the same?
+4. Now examine the code in ```vector-global-order.c```. First, make sure you understand what the code is trying to do; do you understand why the code avoids deadlock? Also, why is there a special case in this  ```vector_add()``` routine when the source and destination vectors are the same?
 
-5. Now run the code with the following flags: -t -n 2 -l 100000 -d. How long does the code take to complete? How does the total time change when you increase the number of loops, or the number of threads?
+    By locking the vector with lower pointer address first, circular wait can not happen. So there is no deadlock. When two vectors are same, locking twice would make a thread wait for itself.
+
+5. Now run the code with the following flags: ```-t -n 2 -l 100000 -d```. How long does the code take to complete? How does the total time change when you increase the number of loops, or the number of threads?
 
 6. What happens if you turn on the parallelism flag (-p)? How much would you expect performance to change when each thread is working on adding different vectors (which is what -p enables) versus working on the same ones?
 
