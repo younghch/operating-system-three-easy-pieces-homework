@@ -31,7 +31,7 @@ In this loop, one integer per page of the array a is updated, up to the number o
 
 6. Another thing to watch out for is the fact that most systems today ship with multiple CPUs, and each CPU, of course, has its own TLB hierarchy. To really get good measurements, you have to run your code on just one CPU, instead of letting the scheduler bounce it from one CPU to the next. How can you do that? (hint: look up “pinning a thread” on Google for some clues) What will happen if you don’t do this, and the code moves from one CPU to the other?
 
-    Can use ```sched_setaffinity``` same as on [limited-direct-execution chapter.](../limited-direct-execution/measure-system-call-and-context-switch.c)(works on Linux). If the code moves from one cpu to the other randomly, we can not estimate the size of TLB.
+    ```sched_setaffinity``` can be used as on ['limited-direct-execution' chapter.](../limited-direct-execution/measure-system-call-and-context-switch.c)(works on Linux). If the process moves from one cpu to the other randomly, the size of TLB can not be estimated.
 
 7. Another issue that might arise relates to initialization. If you don’t initialize the array a above before accessing it, the first time you access it will be very expensive, due to initial access costs such as demand zeroing. Will this affect your code and its timing? What can you do to counterbalance these potential costs?
 
