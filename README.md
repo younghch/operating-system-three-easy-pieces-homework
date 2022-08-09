@@ -14,7 +14,7 @@ Chapter | What is homework about
 [Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | [compare SJF, FIFO, RR schedulers under various conditions](simulation/cpu-sched)
 [MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| [see how a MLFQ scheduler behaves](simulation/cpu-sched-mlfq)
 [Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | [see how a lottery scheduler works](simulation/cpu-sched-lottery)
-[Multiprocessor Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf) | Run multi.py
+[Multiprocessor Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf) | 
 [Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | [examine virtual memory usage on Linux-based systems](code/virtualization/address-space)
 [Memory API](http://www.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf) | [write buggy program and use tools to find the bug](code/virtualization/memory-api)
 [Relocation](http://www.cs.wisc.edu/~remzi/OSTEP/vm-mechanism.pdf) | [calculate translated address and check valid](simulation/vm-mechanism)
@@ -33,11 +33,11 @@ Chapter | What is homework about
 --------|-----------
 [Threads Intro](http://www.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf) | [learn the condition of critical section](simulation/threads-intro)
 [Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf)	| [run some c codes to understand the benefit of using mutex](simulation/threads-api)
-[Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| [Compare various locking algorithms](simulation/threads-locks)
-[Lock Usage](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf) | [Build concurrent data structures and measure its performance](code/concurrency/lock-based-concurrent-data-structures)
-[Condition Variables](http://www.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf) | [Learn the right usage of condition variables](simulation/threads-cv)
-[Semaphores](http://www.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf) | [Solve well known semaphore problems](code/concurrency/semaphores)
-[Concurrency Bugs](http://www.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf) | [Compare performance of methods of avoiding deadlocks](simulation/threads-bugs)
+[Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| [compare various locking algorithms](simulation/threads-locks)
+[Lock Usage](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf) | [build concurrent data structures and measure its performance](code/concurrency/lock-based-concurrent-data-structures)
+[Condition Variables](http://www.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf) | [learn the right usage of condition variables](simulation/threads-cv)
+[Semaphores](http://www.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf) | [solve well known semaphore problems](code/concurrency/semaphores)
+[Concurrency Bugs](http://www.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf) | [compare performance of methods of avoiding deadlocks](simulation/threads-bugs)
 [Event-based Concurrency](http://www.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf) | 
 
 ## Persistence
