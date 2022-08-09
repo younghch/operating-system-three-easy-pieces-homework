@@ -67,8 +67,43 @@ Each program takes the same set of arguments (see main-common.c for details):
 
 5. Now run the code with the following flags: ```-t -n 2 -l 100000 -d```. How long does the code take to complete? How does the total time change when you increase the number of loops, or the number of threads?
 
+    Time increases linearly with the number of loop.
+    ```
+    ./vector-global-order -t -n 2 -l 100000 -d
+    Time: 0.04 seconds
+    ./vector-global-order -t -n 2 -l 200000 -d
+    Time: 0.08 seconds
+    ./vector-global-order -t -n 2 -l 300000 -d
+    Time: 0.12 seconds
+    ./vector-global-order -t -n 2 -l 400000 -d
+    Time: 0.15 seconds
+    ```
+
+    ```
+    ./vector-global-order -t -n 2 -l 100000 -d
+    Time: 0.04 seconds
+    ./vector-global-order -t -n 4 -l 50000 -d 
+    Time: 0.11 seconds
+    ./vector-global-order -t -n 8 -l 25000 -d
+    Time: 0.24 seconds
+    ./vector-global-order -t -n 16 -l 12500 -d
+    Time: 0.41 seconds
+    ```
+
 6. What happens if you turn on the parallelism flag (-p)? How much would you expect performance to change when each thread is working on adding different vectors (which is what -p enables) versus working on the same ones?
 
+    If all thread is working on different vectors, there is no need to wait for other thread to free the lock. Performance increase linearly with the number of threads. (for large number of tasks.)
+
+    ```
+    ./vector-global-order -t -n 2 -l 10000000 -d -p
+    Time: 1.46 seconds
+    ./vector-global-order -t -n 2 -l 5000000 -d -p 
+    Time: 0.69 seconds
+    ./vector-global-order -t -n 2 -l 2500000 -d -p
+    Time: 0.35 seconds
+    ./vector-global-order -t -n 2 -l 1250000 -d -p
+    Time: 0.19 seconds
+    ```
 7. Now let’s study vector-try-wait.c. First make sure you understand the code. Is the first call to pthread mutex trylock() really needed? Now run the code. How fast does it run compared to the global order ap- proach? How does the number of retries, as counted by the code, change as the number of threads increases?
 
 8. Now let’s look at vector-avoid-hold-and-wait.c. What is the main problem with this approach? How does its performance compare to the other versions, when running both with -p and without it?
