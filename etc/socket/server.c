@@ -18,7 +18,6 @@ int main(int argc, char const *argv[])
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
     assert(server_socket != -1);
 
-    setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(PORT);
