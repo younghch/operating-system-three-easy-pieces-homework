@@ -34,6 +34,7 @@
         "vector": "c",
         "memory": "c",
         "complex": "c",
-        "ios": "cpp"
+        "ios": "cpp",
+        "in.h": "c"
     }
 }
