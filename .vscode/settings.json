@@ -33,6 +33,7 @@
         "variant": "c",
         "vector": "c",
         "memory": "c",
-        "complex": "c"
+        "complex": "c",
+        "ios": "cpp"
     }
 }
