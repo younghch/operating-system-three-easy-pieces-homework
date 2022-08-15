@@ -39,7 +39,7 @@ int     main(int argc, char const *argv[])
     for (i = 0; i < num_clients; i++)
     {
         messages[i] = malloc(strlen(base_message)+2);
-        strcpy(base_message, messages[i]);
+        strlcpy(messages[i], base_message, strlen(base_message)+2);
         messages[i][strlen(base_message)] = i+65;
         messages[i][strlen(base_message)+1] = 0;
     }

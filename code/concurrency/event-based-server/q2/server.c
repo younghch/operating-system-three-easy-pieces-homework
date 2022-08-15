@@ -85,7 +85,7 @@ int main(int argc, char const *argv[])
                 if (valread == 0)
                 {
                     getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-                    printf("=========Client disconnected=========\nsip : %s, port: %d\n", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+                    printf("=========Client disconnected=========\nip : %s, port: %d\n", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
                     
                     close(sd);
                     client_socket[i] = 0;
