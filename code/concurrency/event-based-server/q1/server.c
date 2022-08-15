@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <time.h>
-#include "common_socket.h"
+#include "../common_socket.h"
 
 int server_socket;
 

@@ -35,6 +35,7 @@
         "memory": "c",
         "complex": "c",
         "ios": "cpp",
-        "in.h": "c"
+        "in.h": "c",
+        "common_socket.h": "c"
     }
 }
