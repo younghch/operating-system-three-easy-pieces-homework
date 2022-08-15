@@ -107,7 +107,6 @@ int main(int argc, char const *argv[])
                         while(getline(&line, &len_line, file) != -1)
                             Send(client_sock, line, strlen(line), 0);
                     }
-                    Send(client_sock, NULL, 0, 0);
                 }
             }
         }

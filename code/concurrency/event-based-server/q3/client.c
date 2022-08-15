@@ -29,6 +29,7 @@ int main(int argc, char const *argv[])
     num_read = read(client_socket, buffer, BUFFER_SIZE);
     while(num_read > 0)
     {
+        buffer[num_read] = 0;
         printf("%s", buffer);
         num_read = read(client_socket, buffer, BUFFER_SIZE);
     }
