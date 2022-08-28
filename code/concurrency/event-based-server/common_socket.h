@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 
 #define LOCAL_HOST  "127.0.0.1"
+#define EOFS        "#!EOF*&"
 #define PORT        8080
 #define BUFFER_SIZE 1024
 

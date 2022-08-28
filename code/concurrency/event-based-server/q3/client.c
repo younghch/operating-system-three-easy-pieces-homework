@@ -30,8 +30,16 @@ int main(int argc, char const *argv[])
     while(num_read > 0)
     {
         buffer[num_read] = 0;
-        printf("%s", buffer);
-        num_read = read(client_socket, buffer, BUFFER_SIZE);
+        if (num_read >= strlen(EOFS) && strcmp(buffer+num_read-strlen(EOFS), EOFS) == 0)
+        {
+            buffer[num_read-strlen(EOFS)] = 0;
+            printf("%s", buffer);
+            num_read = -1;
+        }
+        else {
+            printf("%s", buffer);
+            num_read = read(client_socket, buffer, BUFFER_SIZE);
+        }
     }
     close(client_socket);
     return 0;

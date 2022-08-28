@@ -7,8 +7,8 @@
 #include <assert.h>
 #include "../common_socket.h"
 
-#define PORT         8080
 #define MAX_CLIENTS  30
+
 int main(int argc, char const *argv[])
 {
     int                     opt;
@@ -107,6 +107,7 @@ int main(int argc, char const *argv[])
                         while(getline(&line, &len_line, file) != -1)
                             Send(client_sock, line, strlen(line), 0);
                     }
+                    Send(client_sock, EOFS, strlen(EOFS), 0);
                 }
             }
         }
