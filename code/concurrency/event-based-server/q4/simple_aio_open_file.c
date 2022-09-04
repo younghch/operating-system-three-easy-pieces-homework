@@ -43,10 +43,9 @@ int main(int argc, char const *argv[])
             }
             printf("%s", (char *)cb->aio_buf);
 
-            ((char*)cb->aio_buf)[0] = 0;
             new_cb = calloc(1, sizeof(struct aiocb));
             new_cb->aio_fildes = cb->aio_fildes;
-            new_cb->aio_buf = cb->aio_buf;
+            new_cb->aio_buf = calloc(1024, sizeof(char));
             new_cb->aio_offset = cb->aio_offset + BUFFER_SIZE;
             new_cb->aio_nbytes = BUFFER_SIZE;
             aio_return(cb);
