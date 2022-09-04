@@ -37,6 +37,7 @@
         "ios": "cpp",
         "in.h": "c",
         "common_socket.h": "c",
-        "aio.h": "c"
+        "aio.h": "c",
+        "fcntl.h": "c"
     }
 }
