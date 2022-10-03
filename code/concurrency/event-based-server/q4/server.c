@@ -11,16 +11,21 @@
 
 #define MAX_CLIENTS  30
 
-void print_and_continue_read(struct aiocb *task)
+void set_aio_cb(struct aiocb *cb, int fd)
 {
-    printf("=========Client reqeusted file=======\n%s\n", (char *)task->aio_buf);
+    cb->aio_fildes = fd;
+    cb->aio_offset = 0;
+    if (cb->aio_buf == NULL)    cb->aio_buf = calloc(BUFFER_SIZE, sizeof(char));
+    else                        memset(cb->aio_buf, 0, BUFFER_SIZE);
+    cb->aio_nbytes = BUFFER_SIZE;
 }
 
 int main(int argc, char const *argv[])
 {
     int                     opt, status;
-    int                     master_socket, new_socket, client_sock, max_sd;
-    struct  aiocb           clients_cb[MAX_CLIENTS];
+    int                     master_socket, new_socket, cur_socket, max_sd, cur_file;
+    struct  aiocb           aio_cbs[MAX_CLIENTS];
+    int                     clients[MAX_CLIENTS] = {0};
     struct  aiocb           *new_task, *cur_task;
     int                     num_ready, valread;
     int                     i, addrlen;
@@ -35,10 +40,9 @@ int main(int argc, char const *argv[])
     line = NULL;
     message = "No such file!\n";
     master_socket = socket(AF_INET, SOCK_STREAM, 0);
-    status = fcntl(master_socket, F_SETFL, fcntl(master_socket, F_GETFL, 0) | O_NONBLOCK);
     for (i=0; i < MAX_CLIENTS; i++)
-        bzero(&clients_cb[i], sizeof(struct aiocb));
-    assert(master_socket != -1 && status != -1);
+        bzero(&aio_cbs[i], sizeof(struct aiocb));
+    assert(master_socket != -1);
 
     Setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
@@ -60,42 +64,56 @@ int main(int argc, char const *argv[])
                     new_socket, inet_ntoa(address.sin_addr), ntohs(address.sin_port));
             for (i=0; i < MAX_CLIENTS; i++)
             {
-                if (clients_cb[i].aio_fildes == 0)
+                if (aio_cbs[i].aio_fildes == 0)
                 {
-                    new_task = &clients_cb[i];
+                    new_task = &aio_cbs[i];
                     break;
                 }   
             }
-            new_task->aio_fildes = new_socket;
-            new_task->aio_offset = 0;
-            // new_task->aio_reqprio = 0;
-            new_task->aio_buf = calloc(BUFFER_SIZE, sizeof(char));
-            new_task->aio_nbytes = BUFFER_SIZE;
-            // new_task->aio_sigevent.sigev_notify = SIGEV_NONE;
+            set_aio_cb(new_task, new_socket);
             aio_read(new_task);
         }
-        // READ file 기능 추가, write 추가
         for (i=0; i<MAX_CLIENTS; i++)
         {
-            cur_task = &clients_cb[i];
+            cur_task = &aio_cbs[i];
             if (cur_task->aio_fildes == 0)
                 continue;
             status = aio_error(cur_task);
             if (status == -1)
             {
-                puts("sig -1!!");
-                // aio_return(cur_task);
-                continue;
+                printf("error ocuured!: %d\n", errno);
+                break;
             }
             if (status == EINPROGRESS)
                 continue;
-            printf("not in progress : %d\n", cur_task->aio_fildes);
-            print_and_continue_read(cur_task);
+            if (clients[i] == 0)
+            {
+                cur_socket = cur_task->aio_fildes;
+                cur_file = open((char *)cur_task->aio_buf, O_RDONLY);
+                aio_return(cur_task);
+                if (cur_file == 0 || cur_file == 1){
+                    printf("no such file!!\n");
+                    cur_task->aio_buf = 0;
+                    Send(cur_socket, EOFS, strlen(EOFS), 0);
+                } else {
+                    set_aio_cb(cur_task, cur_file);
+                    aio_write(cur_task);
+                    clients[i] = cur_socket;
+                }
+            }
+            else
+            {
+                char *temp = cur_task->aio_buf;
+                if (temp[0] == 0){
+                    Send(clients[i], EOFS, strlen(EOFS), 0);
+                    clients[i] = 0;
+                    cur_task->aio_buf = 0;
+                }
+                Send(clients[i], cur_task->aio_buf, strlen(cur_task->aio_buf), 0);
+                cur_task->aio_offset += BUFFER_SIZE;
+                memset(cur_task->aio_buf, 0, BUFFER_SIZE);
+                aio_write(cur_task);
+            }
         }
     }
-
-
-
-
-
 }
