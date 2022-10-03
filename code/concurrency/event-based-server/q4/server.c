@@ -11,12 +11,11 @@
 
 #define MAX_CLIENTS  30
 
-void set_aio_cb(struct aiocb *cb, int fd)
+void set_aio_cb(struct aiocb *cb, int fd, int offset)
 {
     cb->aio_fildes = fd;
-    cb->aio_offset = 0;
-    if (cb->aio_buf == NULL)    cb->aio_buf = calloc(BUFFER_SIZE, sizeof(char));
-    else                        memset(cb->aio_buf, 0, BUFFER_SIZE);
+    cb->aio_offset = offset;
+    cb->aio_buf = calloc(BUFFER_SIZE, sizeof(char));
     cb->aio_nbytes = BUFFER_SIZE;
 }
 
@@ -27,7 +26,7 @@ int main(int argc, char const *argv[])
     struct  aiocb           aio_cbs[MAX_CLIENTS];
     int                     clients[MAX_CLIENTS] = {0};
     struct  aiocb           *new_task, *cur_task;
-    int                     num_ready, valread;
+    int                     offset;
     int                     i, addrlen;
     FILE*                   file;
     size_t                  len_line;
@@ -70,7 +69,7 @@ int main(int argc, char const *argv[])
                     break;
                 }   
             }
-            set_aio_cb(new_task, new_socket);
+            set_aio_cb(new_task, new_socket, 0);
             aio_read(new_task);
         }
         for (i=0; i<MAX_CLIENTS; i++)
@@ -82,12 +81,16 @@ int main(int argc, char const *argv[])
             if (status == -1)
             {
                 printf("error ocuured!: %d\n", errno);
-                break;
+                continue;
             }
             if (status == EINPROGRESS)
+            {
+                printf("EINPROGRESS\n");
                 continue;
+            }
             if (clients[i] == 0)
             {
+                printf("open file from server : %s", cur_task->aio_buf);
                 cur_socket = cur_task->aio_fildes;
                 cur_file = open((char *)cur_task->aio_buf, O_RDONLY);
                 aio_return(cur_task);
@@ -96,23 +99,28 @@ int main(int argc, char const *argv[])
                     cur_task->aio_buf = 0;
                     Send(cur_socket, EOFS, strlen(EOFS), 0);
                 } else {
-                    set_aio_cb(cur_task, cur_file);
+                    set_aio_cb(cur_task, cur_file, 0);
                     aio_write(cur_task);
                     clients[i] = cur_socket;
                 }
             }
             else
             {
-                char *temp = cur_task->aio_buf;
+                char *temp = cur_task->aio_buf; 
                 if (temp[0] == 0){
                     Send(clients[i], EOFS, strlen(EOFS), 0);
                     clients[i] = 0;
                     cur_task->aio_buf = 0;
+                } else {
+                    Send(clients[i], cur_task->aio_buf, strlen(cur_task->aio_buf), 0);
+                    
+                    cur_file = cur_task->aio_fildes;
+                    offset = cur_task->aio_offset + BUFFER_SIZE;
+                    aio_return(cur_task);
+
+                    set_aio_cb(cur_task, cur_file, offset);
+                    aio_write(cur_task);
                 }
-                Send(clients[i], cur_task->aio_buf, strlen(cur_task->aio_buf), 0);
-                cur_task->aio_offset += BUFFER_SIZE;
-                memset(cur_task->aio_buf, 0, BUFFER_SIZE);
-                aio_write(cur_task);
             }
         }
     }
