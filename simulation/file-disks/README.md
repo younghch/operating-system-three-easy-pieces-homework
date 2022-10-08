@@ -183,7 +183,81 @@ model of how a disk really works.
 
 2. Do the same requests above, but change the seek rate to different values: `-S 2, -S 4, -S 8, -S 10, -S 40, -S 0.1`. How do the times change?
 
+    Faster seek speed reduces the total time. But when seek speed is large enough that rotate time to the clockwise adjacent block is smaller than the seek time to the adjacent track, increasing seek speed does not decrease the total time.
+
+    1. `python3 disk.py -a 7,30,8 -S 0.1`    
+
+        ```
+        Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+        Block:  30  Seek:801  Rotate:219  Transfer: 30  Total:1050
+        Block:   8  Seek:801  Rotate:309  Transfer: 30  Total:1140
+
+        TOTALS      Seek:1602  Rotate:543  Transfer: 90  Total:2235
+        ```  
+
+    1. `python3 disk.py -a 7,30,8 -S 2`    
+
+        ```
+        Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+        Block:  30  Seek: 40  Rotate:260  Transfer: 30  Total: 330
+        Block:   8  Seek: 40  Rotate:350  Transfer: 30  Total: 420
+
+        TOTALS      Seek: 80  Rotate:625  Transfer: 90  Total: 795
+        ```  
+    1. `python3 disk.py -a 7,30,8 -S 8`    
+
+        ```
+        Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+        Block:  30  Seek: 10  Rotate:290  Transfer: 30  Total: 330
+        Block:   8  Seek: 10  Rotate: 20  Transfer: 30  Total:  60
+
+        TOTALS      Seek: 20  Rotate:325  Transfer: 90  Total: 435
+        ```  
+    1. `python3 disk.py -a 7,30,8 -S 40`    
+
+        ```
+        Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+        Block:  30  Seek:  2  Rotate:298  Transfer: 30  Total: 330
+        Block:   8  Seek:  2  Rotate: 28  Transfer: 30  Total:  60
+
+        TOTALS      Seek:  4  Rotate:341  Transfer: 90  Total: 435
+        ```  
+        
+  
 3. Do the same requests above, but change the rotation rate: `-R 0.1,-R 0.5,-R 0.01`. How do the times change?
+
+    Higher roatition rate decrease the total time.
+    
+    1. `python3 disk.py -a 7,30,8 -R 0.01`    
+
+        ```
+        Block:   7  Seek:  0  Rotate:1500  Transfer:3000  Total:4500
+        Block:  30  Seek: 80  Rotate:29920  Transfer:3001  Total:33001
+        Block:   8  Seek: 80  Rotate:2920  Transfer:2999  Total:5999
+
+        TOTALS      Seek:160  Rotate:34340  Transfer:9000  Total:4350
+        ```  
+
+    1. `python3 disk.py -a 7,30,8 -R 0.1`    
+
+        ```
+        Block:   7  Seek:  0  Rotate:150  Transfer:299  Total: 449
+        Block:  30  Seek: 80  Rotate:2920  Transfer:301  Total:3301
+        Block:   8  Seek: 80  Rotate:219  Transfer:300  Total: 599
+
+        TOTALS      Seek:160  Rotate:3289  Transfer:900  Total:4349
+        ```  
+
+    1. `python3 disk.py -a 7,30,8 -R 0.5`    
+
+        ```
+        Block:   7  Seek:  0  Rotate: 30  Transfer: 60  Total:  90
+        Block:  30  Seek: 80  Rotate:520  Transfer: 60  Total: 660
+        Block:   8  Seek: 80  Rotate:700  Transfer: 60  Total: 840
+
+        TOTALS      Seek:160  Rotate:1250  Transfer:180  Total:1590
+        ```  
+
 
 4. FIFO is not always best, e.g., with the request stream `-a 7,30,8`,whatorder should the requests be processed in? Run the shortest seek-time first (SSTF) scheduler (-p SSTF) on this workload; how long should it take (seek, rotation, transfer) for each request to be served?
 
