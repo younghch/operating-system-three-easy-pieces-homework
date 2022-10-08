@@ -312,7 +312,46 @@ model of how a disk really works.
     ```
 
 
-6. Here is a request stream to try: `-a10,11,12,13`. What goes poorly when it runs? Try adding track skew to address this problem (`-o skew`). Given the default seek rate, what should the skew be to maximize performance? What about for different seek rates (e.g., `-S 2`, `-S 4`)? In general, could you write a formula to figure out the skew?
+6. Here is a request stream to try: `-a 10,11,12,13`. What goes poorly when it runs? Try adding track skew to address this problem (`-o skew`). Given the default seek rate, what should the skew be to maximize performance? What about for different seek rates (e.g., `-S 2`, `-S 4`)? In general, could you write a formula to figure out the skew?
+
+    Can not read a block 13 sequentially and large rotate time is needed because the seek time is needed to move to the next track. This problem can be solved by giving a skew of 2(`-o 2`) .
+
+    ```
+    python3 disk.py -a 10,11,12,13
+    
+    Block:  10  Seek:  0  Rotate:105  Transfer: 30  Total: 135
+    Block:  11  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  12  Seek: 40  Rotate:320  Transfer: 30  Total: 390
+    Block:  13  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+
+    TOTALS      Seek: 40  Rotate:425  Transfer:120  Total: 585
+
+    python3  disk.py -a 10,11,12,13 -o 2
+
+    Block:  10  Seek:  0  Rotate:105  Transfer: 30  Total: 135
+    Block:  11  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  12  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:  13  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+
+    TOTALS      Seek: 40  Rotate:125  Transfer:120  Total: 285
+
+    python3 disk.py -a 10,11,12,13 -S 2 -o 1 
+
+    Block:  10  Seek:  0  Rotate:105  Transfer: 30  Total: 135
+    Block:  11  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  12  Seek: 20  Rotate: 10  Transfer: 30  Total:  60
+    Block:  13  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+
+    TOTALS      Seek: 20  Rotate:115  Transfer:120  Total: 255
+
+    python3 disk.py -a 10,11,12,13 -o 3 -S 0.5 -G
+
+    Block:  10  Seek:  0  Rotate:105  Transfer: 30  Total: 135
+    Block:  11  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  12  Seek: 80  Rotate: 10  Transfer: 30  Total: 120
+    Block:  13  Seek:  0  Rotate:  0  Transfer: 30  Total:  30    
+    ```
+    In general, `skew = seek time // rotate time + 1`. (rotate time = time needed to rotate clockwise adjacent block, seek time =  time needed to move to adjacent track, seek time != 0)
 
 7. Specify a disk with different density per zone, e.g., -z 10,20,30, which specifies the angular difference between blocks on the outer, middle, and inner tracks. Run some random requests (e.g., -a -1 -A 5,-1,0, which specifies that random requests should be used via the -a -1 flag and that five requests ranging from 0 to the max be generated), and compute the seek, rotation, and transfer times. Use different random seeds. What is the bandwidth (in sectors per unit time) on the outer, middle, and inner tracks?
 8. Aschedulingwindowdetermineshowmanyrequeststhediskcanexamine at once. Generate random workloads (e.g., -A 1000,-1,0, with different seeds) and see how long the SATF scheduler takes when the scheduling win- dow is changed from 1 up to the number of requests. How big of a window is needed to maximize performance? Hint: use the -c flag and don’t turn on graphics (-G) to run these quickly. When the scheduling window is set to 1, does it matter which policy you are using?
