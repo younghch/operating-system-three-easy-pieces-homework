@@ -227,7 +227,7 @@ model of how a disk really works.
 3. Do the same requests above, but change the rotation rate: `-R 0.1,-R 0.5,-R 0.01`. How do the times change?
 
     Higher roatition rate decrease the total time.
-    
+
     1. `python3 disk.py -a 7,30,8 -R 0.01`    
 
         ```
@@ -261,8 +261,59 @@ model of how a disk really works.
 
 4. FIFO is not always best, e.g., with the request stream `-a 7,30,8`,whatorder should the requests be processed in? Run the shortest seek-time first (SSTF) scheduler (-p SSTF) on this workload; how long should it take (seek, rotation, transfer) for each request to be served?
 
-5. Nowusetheshortestaccess-timefirst(SATF)scheduler(-pSATF).Doesit make any difference for -a 7,30,8 workload? Find a set of requests where SATF outperforms SSTF; more generally, when is SATF better than SSTF?
-6. Hereisarequeststreamtotry:-a10,11,12,13.Whatgoespoorlywhen it runs? Try adding track skew to address this problem (-o skew). Given the default seek rate, what should the skew be to maximize performance? What about for different seek rates (e.g., -S 2, -S 4)? In general, could you write a formula to figure out the skew?
+    Block  |Seek   |Rotate |Transfer   |Total  
+    -------|-------|-------|-----------|-------
+    7      |0      |15     |30         |45    
+    8      |0      |0      |30         |30    
+    30     |80     |190    |30         |300    
+    total  |80     |205    |90         |375    
+
+5. Now use the shortest access-time first(SATF)scheduler(`-p SATF`).Does it make any difference for `-a 7,30,8` workload? Find a set of requests where SATF outperforms SSTF; more generally, when is SATF better than SSTF?
+
+    SATF makes a same result for `-a 7,30,8`.
+
+    ```
+    Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+    Block:   8  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  30  Seek: 80  Rotate:190  Transfer: 30  Total: 300
+
+    TOTALS      Seek: 80  Rotate:205  Transfer: 90  Total: 375
+    ```
+
+    Set of requests where SATF outperforms SSTF
+    ```
+    python3 disk.py -a 7,22,1,16,7,22,1,16,7 -p SATF
+    
+    Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+    Block:  22  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:   1  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:  16  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:   7  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:  22  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:   1  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:  16  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:   7  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+
+    TOTALS      Seek:320  Rotate:175  Transfer:270  Total: 765
+    
+    python3 disk.py -a 7,22,1,16,7,22,1,16,7 -p SSTF
+
+    Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+    Block:   1  Seek:  0  Rotate:150  Transfer: 30  Total: 180
+    Block:   7  Seek:  0  Rotate:150  Transfer: 30  Total: 180
+    Block:   1  Seek:  0  Rotate:150  Transfer: 30  Total: 180
+    Block:   7  Seek:  0  Rotate:150  Transfer: 30  Total: 180
+    Block:  22  Seek: 40  Rotate: 20  Transfer: 30  Total:  90
+    Block:  16  Seek:  0  Rotate:150  Transfer: 30  Total: 180
+    Block:  22  Seek:  0  Rotate:150  Transfer: 30  Total: 180
+    Block:  16  Seek:  0  Rotate:150  Transfer: 30  Total: 180
+
+    TOTALS      Seek: 40  Rotate:1085  Transfer:270  Total:1395
+    ```
+
+
+6. Here is a request stream to try: `-a10,11,12,13`. What goes poorly when it runs? Try adding track skew to address this problem (`-o skew`). Given the default seek rate, what should the skew be to maximize performance? What about for different seek rates (e.g., `-S 2`, `-S 4`)? In general, could you write a formula to figure out the skew?
+
 7. Specify a disk with different density per zone, e.g., -z 10,20,30, which specifies the angular difference between blocks on the outer, middle, and inner tracks. Run some random requests (e.g., -a -1 -A 5,-1,0, which specifies that random requests should be used via the -a -1 flag and that five requests ranging from 0 to the max be generated), and compute the seek, rotation, and transfer times. Use different random seeds. What is the bandwidth (in sectors per unit time) on the outer, middle, and inner tracks?
 8. Aschedulingwindowdetermineshowmanyrequeststhediskcanexamine at once. Generate random workloads (e.g., -A 1000,-1,0, with different seeds) and see how long the SATF scheduler takes when the scheduling win- dow is changed from 1 up to the number of requests. How big of a window is needed to maximize performance? Hint: use the -c flag and don’t turn on graphics (-G) to run these quickly. When the scheduling window is set to 1, does it matter which policy you are using?
 9. Create a series of requests to starve a particular request, assuming an SATF policy. Given that sequence, how does it perform if you use a bounded SATF (BSATF) scheduling approach? In this approach, you specify the scheduling window (e.g., -w 4); the scheduler only moves onto the next window of requests when all requests in the current window have been ser- viced. Does this solve starvation? How does it perform, as compared to SATF? In general, how should a disk make this trade-off between perfor- mance and starvation avoidance?
