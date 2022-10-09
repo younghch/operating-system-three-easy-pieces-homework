@@ -353,7 +353,27 @@ model of how a disk really works.
     ```
     In general, `skew = seek time // rotate time + 1`. (rotate time = time needed to rotate clockwise adjacent block, seek time =  time needed to move to adjacent track, seek time != 0)
 
-7. Specify a disk with different density per zone, e.g., -z 10,20,30, which specifies the angular difference between blocks on the outer, middle, and inner tracks. Run some random requests (e.g., -a -1 -A 5,-1,0, which specifies that random requests should be used via the -a -1 flag and that five requests ranging from 0 to the max be generated), and compute the seek, rotation, and transfer times. Use different random seeds. What is the bandwidth (in sectors per unit time) on the outer, middle, and inner tracks?
+7. Specify a disk with different density per zone, e.g., `-z 10,20,30`, which specifies the angular difference between blocks on the outer, middle, and inner tracks. Run some random requests (e.g., `-a -1 -A 5,-1,0`, which specifies that random requests should be used via the -a -1 flag and that five requests ranging from 0 to the max be generated), and compute the seek, rotation, and transfer times. Use different random seeds. What is the bandwidth (in sectors per unit time) on the outer, middle, and inner tracks?
+
+    `python3 disk.py -z 10,20,30 -a -1 -A 5,-1,0 -s 1 `
+
+    Block  |Seek   |Rotate |Transfer   |Total  
+    -------|-------|-------|-----------|-------
+    7      |0      |245    |10         |255    
+    45     |40     |55     |20         |115    
+    41     |0      |260    |20         |280    
+    13     |40     |335    |10         |385    
+    26     |0      |120    |10         |130    
+    total  |80     |1015   |70         |1165
+
+    Circle |Bandwidth<br>(sector/unit time)|
+    -------|---------|
+    inner  |0.1      |
+    middle |0.05     |
+    outer  |0.033    |
+    
 8. Aschedulingwindowdetermineshowmanyrequeststhediskcanexamine at once. Generate random workloads (e.g., -A 1000,-1,0, with different seeds) and see how long the SATF scheduler takes when the scheduling win- dow is changed from 1 up to the number of requests. How big of a window is needed to maximize performance? Hint: use the -c flag and don’t turn on graphics (-G) to run these quickly. When the scheduling window is set to 1, does it matter which policy you are using?
+
 9. Create a series of requests to starve a particular request, assuming an SATF policy. Given that sequence, how does it perform if you use a bounded SATF (BSATF) scheduling approach? In this approach, you specify the scheduling window (e.g., -w 4); the scheduler only moves onto the next window of requests when all requests in the current window have been ser- viced. Does this solve starvation? How does it perform, as compared to SATF? In general, how should a disk make this trade-off between perfor- mance and starvation avoidance?
+
 10. Alltheschedulingpolicieswehavelookedatthusfararegreedy;theypick the next best option instead of looking for an optimal schedule. Can you find a set of requests in which greedy is not optimal?
