@@ -372,8 +372,46 @@ model of how a disk really works.
     middle |0.05     |
     outer  |0.033    |
     
-8. Aschedulingwindowdetermineshowmanyrequeststhediskcanexamine at once. Generate random workloads (e.g., -A 1000,-1,0, with different seeds) and see how long the SATF scheduler takes when the scheduling win- dow is changed from 1 up to the number of requests. How big of a window is needed to maximize performance? Hint: use the -c flag and don’t turn on graphics (-G) to run these quickly. When the scheduling window is set to 1, does it matter which policy you are using?
+8. A scheduling window determines how many requests the disk can examine at once. Generate random workloads (e.g., `-A 1000,-1,0`, with different seeds) and see how long the SATF scheduler takes when the scheduling window is changed from 1 up to the number of requests. How big of a window is needed to maximize performance? Hint: use the -c flag and don’t turn on graphics (-G) to run these quickly. When the scheduling window is set to 1, does it matter which policy you are using?
 
+    Window size of 256 showed the best performance. When scheduling window is set to 1, It would show the same result regardless of the policy used.
+
+    ```
+    ./sh satf-window-size-run.sh
+
+    window size : 1
+    TOTALS      Seek:19640  Rotate:178315  Transfer:30000  Total:227955
+
+    window size : 2
+    TOTALS      Seek:16280  Rotate:101455  Transfer:30000  Total:147735
+
+    window size : 4
+    TOTALS      Seek:12040  Rotate:56735  Transfer:30000  Total:98775
+
+    window size : 8
+    TOTALS      Seek:8400  Rotate:32655  Transfer:30000  Total:71055
+
+    window size : 16
+    TOTALS      Seek:4880  Rotate:18895  Transfer:30000  Total:53775
+
+    window size : 32
+    TOTALS      Seek:2200  Rotate:10775  Transfer:30000  Total:42975
+
+    window size : 64
+    TOTALS      Seek:1040  Rotate:8545  Transfer:30000  Total:39585
+
+    window size : 128
+    TOTALS      Seek:480  Rotate:7305  Transfer:30000  Total:37785
+
+    window size : 256
+    TOTALS      Seek:400  Rotate:6665  Transfer:30000  Total:37065
+
+    window size : 512
+    TOTALS      Seek:800  Rotate:6625  Transfer:30000  Total:37425
+
+    window size : 1024
+    TOTALS      Seek:720  Rotate:6705  Transfer:30000  Total:37425
+    ```
 9. Create a series of requests to starve a particular request, assuming an SATF policy. Given that sequence, how does it perform if you use a bounded SATF (BSATF) scheduling approach? In this approach, you specify the scheduling window (e.g., -w 4); the scheduler only moves onto the next window of requests when all requests in the current window have been ser- viced. Does this solve starvation? How does it perform, as compared to SATF? In general, how should a disk make this trade-off between perfor- mance and starvation avoidance?
 
 10. Alltheschedulingpolicieswehavelookedatthusfararegreedy;theypick the next best option instead of looking for an optimal schedule. Can you find a set of requests in which greedy is not optimal?
