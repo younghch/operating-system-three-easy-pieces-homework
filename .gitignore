@@ -3,4 +3,4 @@
 test.c
 .DS_Store
 *.test
-*/settings.json
+**/settings.json

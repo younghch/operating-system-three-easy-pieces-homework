@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
     cb->aio_fildes = fd;
     cb->aio_buf = calloc(1024, sizeof(char));
     cb->aio_offset = 0;
-    cb->aio_nbytes = BUFFER_SIZE;
+    cb->aio_nbytes = 10;
     
     printf("%d\n", cb->aio_fildes);
     aio_read(cb);
@@ -54,4 +54,6 @@ int main(int argc, char const *argv[])
             aio_read(cb);
         }
     }
+    aio_return(cb);
+    free(cb);
 }
