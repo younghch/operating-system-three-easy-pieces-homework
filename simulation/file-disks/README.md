@@ -412,6 +412,62 @@ model of how a disk really works.
     window size : 1024
     TOTALS      Seek:720  Rotate:6705  Transfer:30000  Total:37425
     ```
-9. Create a series of requests to starve a particular request, assuming an SATF policy. Given that sequence, how does it perform if you use a bounded SATF (BSATF) scheduling approach? In this approach, you specify the scheduling window (e.g., -w 4); the scheduler only moves onto the next window of requests when all requests in the current window have been ser- viced. Does this solve starvation? How does it perform, as compared to SATF? In general, how should a disk make this trade-off between perfor- mance and starvation avoidance?
 
-10. Alltheschedulingpolicieswehavelookedatthusfararegreedy;theypick the next best option instead of looking for an optimal schedule. Can you find a set of requests in which greedy is not optimal?
+9. Create a series of requests to starve a particular request, assuming an SATF policy. Given that sequence, how does it perform if you use a bounded SATF (BSATF) scheduling approach? In this approach, you specify the scheduling window (e.g., -w 4); the scheduler only moves onto the next window of requests when all requests in the current window have been serviced. Does this solve starvation? How does it perform, as compared to SATF? In general, how should a disk make this trade-off between performance and starvation avoidance?
+
+    Yes, It solves starvation but performs bad. 
+
+    ```
+    python3 disk.py -a 7,30,8,9,10,11,0,1,2,3,31,4,5 -p SATF
+
+    Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+    Block:   8  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   9  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  10  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  11  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   0  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   1  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   2  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   3  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   4  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   5  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  30  Seek: 80  Rotate:280  Transfer: 30  Total: 390
+    Block:  31  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+
+    TOTALS      Seek: 80  Rotate:295  Transfer:390  Total: 765
+
+    python3 disk.py -a 7,30,8,9,10,11,0,1,2,3,31,4,5 -p BSATF -w 4
+
+    Block:   7  Seek:  0  Rotate: 15  Transfer: 30  Total:  45
+    Block:   8  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   9  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  30  Seek: 80  Rotate:160  Transfer: 30  Total: 270
+    Block:  10  Seek: 80  Rotate: 10  Transfer: 30  Total: 120
+    Block:  11  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   0  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   1  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   2  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   3  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:   4  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
+    Block:  31  Seek: 80  Rotate:340  Transfer: 30  Total: 450
+    Block:   5  Seek: 80  Rotate:190  Transfer: 30  Total: 300
+
+    TOTALS      Seek:320  Rotate:715  Transfer:390  Total:1425
+    ```
+10. All the scheduling policies we have looked at thus far are greedy; they pick the next best option instead of looking for an optimal schedule. Can you find a set of requests in which greedy is not optimal?
+
+    ```
+    python3 disk.py -a 9,20 -c 
+
+    Block:   9  Seek:  0  Rotate: 75  Transfer: 30  Total: 105
+    Block:  20  Seek: 40  Rotate:260  Transfer: 30  Total: 330
+
+    TOTALS      Seek: 40  Rotate:335  Transfer: 60  Total: 435
+
+    python3 disk.py -a 9,20 -c -p SATF
+
+    Block:  20  Seek: 40  Rotate:  5  Transfer: 30  Total:  75
+    Block:   9  Seek: 40  Rotate:320  Transfer: 30  Total: 390
+
+    TOTALS      Seek: 80  Rotate:325  Transfer: 60  Total: 465
+    ```
