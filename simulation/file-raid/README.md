@@ -335,7 +335,38 @@ different workloads.
 
 4. Now use the reverse flag but increase the size of each request with the -S flag. Try specifying sizes of 8k, 12k, and 16k, while varying the RAID level. What happens to the underlying I/O pattern when the size of the request increases? Make sure to try this with the sequential workload too (-W sequential); for what request sizes are RAID-4 and RAID-5 much more I/O efficient?
 
-5. Use the timing mode of the simulator (-t) to estimate the perfor- mance of 100 random reads to the RAID, while varying the RAID levels, using 4 disks.
+  RAID-4 and RAID-5 much more I/O efficient for chunk size of 16k Sequential read/write is made on both data and parity disk.
+
+  ```
+  python3 raid.py -L 5 -R 20 -n 5 -w 100 -5 LA -C 16k -r -c -W sequential
+
+  0 1
+  LOGICAL WRITE to  addr:0 size:4096
+    read  [disk 0, offset 0]    read  [disk 3, offset 0]  
+    write [disk 0, offset 0]    write [disk 3, offset 0]  
+
+  1 1
+  LOGICAL WRITE to  addr:1 size:4096
+    read  [disk 0, offset 1]    read  [disk 3, offset 1]  
+    write [disk 0, offset 1]    write [disk 3, offset 1]  
+
+  2 1
+  LOGICAL WRITE to  addr:2 size:4096
+    read  [disk 0, offset 2]    read  [disk 3, offset 2]  
+    write [disk 0, offset 2]    write [disk 3, offset 2]  
+
+  3 1
+  LOGICAL WRITE to  addr:3 size:4096
+    read  [disk 0, offset 3]    read  [disk 3, offset 3]  
+    write [disk 0, offset 3]    write [disk 3, offset 3]  
+
+  4 1
+  LOGICAL WRITE to  addr:4 size:4096
+    read  [disk 1, offset 0]    read  [disk 3, offset 0]  
+    write [disk 1, offset 0]    write [disk 3, offset 0]
+  ```
+  
+5. Use the timing mode of the simulator (-t) to estimate the performance of 100 random reads to the RAID, while varying the RAID levels, using 4 disks.
 
 6. Do the same as above, but increase the number of disks. How does the performance of each RAID level scale as the number of disks increases?
 
