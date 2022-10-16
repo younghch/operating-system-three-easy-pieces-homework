@@ -239,3 +239,64 @@ number of blocks per track (100), and a similarly small number of tracks
 (100). You can thus use the simulator to estimate RAID performance under some
 different workloads.
 
+# Questions
+1. Use the simulator to perform some basic RAID mapping tests. Run with different levels (0, 1, 4, 5) and see if you can figure out the mappings of a set of requests. For RAID-5, see if you can figure out the difference between left-symmetric and left-asymmetric layouts. Use some different random seeds to generate different problems than above.
+  ![raid layouts](./raid5-layouts.png)
+  blockSize 4096, numDisks 4, chunkSize 4k
+  ```
+
+  python3 raid.py -L 0 -R 20 -n 5 -s 42 -w 20
+  python3 raid.py -L 1 -R 20 -n 5 -s 42 -w 20
+  python3 raid.py -L 4 -R 20 -n 5 -s 42 -w 20
+  python3 raid.py -L 5 -R 20 -n 5 -s 42 -w 20 -5 LS
+  python3 raid.py -L 5 -R 20 -n 5 -s 42 -w 20 -5 LA
+
+  LOGICAL WRITE to  addr:12 size:4096
+    raid 0: write [disk 0, offset 3]  
+    raid 1: write [disk 0, offset 6], [disk 1, offset 6]  
+    raid 4: read and write [disk 0, offset 4], [disk 3, offset 4]  
+    raid 5(LS): read and write [disk 0, offset 4], [disk 3, offset 4]
+    raid 5(LA): read and write [disk 0, offset 4], [disk 3, offset 4]
+
+  LOGICAL READ from addr:5 size:4096
+    raid 0: read  [disk 1, offset 1]  
+    raid 1: read  [disk 2, offset 2]  
+    raid 4: read  [disk 2, offset 1]  
+    raid 5(LS): read  [disk 1, offset 1]
+    raid 5(LA): read  [disk 3, offset 1]
+
+  LOGICAL READ from addr:14 size:4096
+    raid 0: read  [disk 2, offset 3]  
+    raid 1: read  [disk 1, offset 7]  
+    raid 4: read  [disk 2, offset 4]  
+    raid 5(LS): read  [disk 2, offset 4]
+    raid 5(LA): read  [disk 2, offset 4]
+
+  LOGICAL WRITE to  addr:17 size:4096
+    raid 0: write [disk 1, offset 4]  
+    raid 1: write [disk 2, offset 8], [disk 3, offset 8]  
+    raid 4: read and write [disk 2, offset 5], [disk 3, offset 5]  
+    raid 5(LS): read and write [disk 1, offset 5], [disk 2, offset 5]
+    raid 5(LA): read and write [disk 3, offset 5], [disk 2, offset 5]
+
+  LOGICAL WRITE to  addr:8 size:4096
+    raid 0: write [disk 0, offset 2] 
+    raid 1: write [disk 0, offset 4], [disk 1, offset 4] 
+    raid 4: read and write [disk 2, offset 2], [disk 3, offset 2]  
+    raid 5(LS): read and write [disk 0, offset 2], [disk 1, offset 2]
+    raid 5(LA): read and write [disk 3, offset 2], [disk 1, offset 2]
+    
+  ```
+2. Do the same as the first problem, but this time vary the chunk size with -C. How does chunk size change the mappings?
+
+3. Do the same as above, but use the -r flag to reverse the nature of each problem.
+
+4. Now use the reverse flag but increase the size of each request with the -S flag. Try specifying sizes of 8k, 12k, and 16k, while varying the RAID level. What happens to the underlying I/O pattern when the size of the request increases? Make sure to try this with the sequential workload too (-W sequential); for what request sizes are RAID-4 and RAID-5 much more I/O efficient?
+
+5. Use the timing mode of the simulator (-t) to estimate the perfor- mance of 100 random reads to the RAID, while varying the RAID levels, using 4 disks.
+
+6. Do the same as above, but increase the number of disks. How does the performance of each RAID level scale as the number of disks increases?
+
+7. Do the same as above, but use all writes (-w 100) instead of reads. How does the performance of each RAID level scale now? Can you do a rough estimate of the time it will take to complete the workload of 100 random writes?
+
+8. Run the timing mode one last time, but this time with a sequential workload (-W sequential). How does the performance vary with RAID level, and when doing reads versus writes? How about when varying the size of each request? What size should you write to a RAID when using RAID-4 or RAID-5?
