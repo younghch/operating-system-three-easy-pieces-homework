@@ -1,4 +1,4 @@
-#  and practice codes of [Operating System Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/)
+# Homework from the book [Operating System Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/)
 
 # Link to the answer of each chapter
 **link starts with 'Run' is still working on**
