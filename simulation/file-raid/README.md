@@ -285,10 +285,52 @@ different workloads.
     raid 4: read and write [disk 2, offset 2], [disk 3, offset 2]  
     raid 5(LS): read and write [disk 0, offset 2], [disk 1, offset 2]
     raid 5(LA): read and write [disk 3, offset 2], [disk 1, offset 2]
-    
+
   ```
 2. Do the same as the first problem, but this time vary the chunk size with -C. How does chunk size change the mappings?
+  
+  ```
+  python3 raid.py -L 0 -R 20 -n 5 -s 42 -w 20 -C 8k
+  python3 raid.py -L 1 -R 20 -n 5 -s 42 -w 20 -C 8k
+  python3 raid.py -L 4 -R 20 -n 5 -s 42 -w 20 -C 8k
+  python3 raid.py -L 5 -R 20 -n 5 -s 42 -w 20 -5 LS -C 8k
+  python3 raid.py -L 5 -R 20 -n 5 -s 42 -w 20 -5 LA -C 8k
 
+  LOGICAL WRITE to  addr:12 size:4096
+    raid 0: write [disk 2, offset 2]  
+    raid 1: write [disk 0, offset 6], [disk 1, offset 6]  
+    raid 4: read and write [disk 0, offset 4], [disk 3, offset 4]  
+    raid 5(LS): read and write [disk 2, offset 4], [disk 1, offset 4]
+    raid 5(LA): read and write [disk 0, offset 4], [disk 1, offset 4]
+
+  LOGICAL READ from addr:5 size:4096
+    raid 0: read  [disk 2, offset 1]  
+    raid 1: read  [disk 1, offset 3]  
+    raid 4: read  [disk 2, offset 1]  
+    raid 5(LS): read  [disk 2, offset 1]
+    raid 5(LA): read  [disk 2, offset 1]
+
+  LOGICAL READ from addr:14 size:4096
+    raid 0: read  [disk 3, offset 2]  
+    raid 1: read  [disk 2, offset 6]  
+    raid 4: read  [disk 1, offset 4]  
+    raid 5(LS): read  [disk 3, offset 4]
+    raid 5(LA): read  [disk 2, offset 4]
+
+  LOGICAL WRITE to  addr:17 size:4096
+    raid 0: write [disk 0, offset 5]  
+    raid 1: write [disk 0, offset 9], [disk 1, offset 9]  
+    raid 4: read and write [disk 2, offset 5], [disk 3, offset 5]  
+    raid 5(LS): read and write [disk 0, offset 5], [disk 1, offset 5]
+    raid 5(LA): read and write [disk 3, offset 5], [disk 1, offset 5]
+
+  LOGICAL WRITE to  addr:8 size:4096
+    raid 0: write [disk 0, offset 2] 
+    raid 1: write [disk 0, offset 4], [disk 1, offset 4] 
+    raid 4: read and write [disk 1, offset 2], [disk 3, offset 2]  
+    raid 5(LS): read and write [disk 0, offset 2], [disk 2, offset 2]
+    raid 5(LA): read and write [disk 1, offset 2], [disk 2, offset 2]
+  ```
 3. Do the same as above, but use the -r flag to reverse the nature of each problem.
 
 4. Now use the reverse flag but increase the size of each request with the -S flag. Try specifying sizes of 8k, 12k, and 16k, while varying the RAID level. What happens to the underlying I/O pattern when the size of the request increases? Make sure to try this with the sequential workload too (-W sequential); for what request sizes are RAID-4 and RAID-5 much more I/O efficient?
