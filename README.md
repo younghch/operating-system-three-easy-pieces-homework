@@ -38,14 +38,14 @@ Chapter | What is homework about
 [Condition Variables](http://www.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf) | [learn the right usage of condition variables](simulation/threads-cv)
 [Semaphores](http://www.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf) | [solve well known semaphore problems](code/concurrency/semaphores)
 [Concurrency Bugs](http://www.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf) | [compare performance among methods of avoiding deadlocks](simulation/threads-bugs)
-[Event-based Concurrency](http://www.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf) | [make a simple event-based server](code/concurrency/event-based-server/README.md)
+[Event-based Concurrency](http://www.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf) | [make a simple event-based server](code/concurrency/event-based-server)
 
 ## Persistence
 
 Chapter | What is homework about
 --------|-----------
-[Hard Disk Drives](http://www.cs.wisc.edu/~remzi/OSTEP/file-disks.pdf) | [calculate and compare access time in the hard disk drive](simulation/file-disks/README.md)
-[RAID](http://www.cs.wisc.edu/~remzi/OSTEP/file-raid.pdf) | 
+[Hard Disk Drives](http://www.cs.wisc.edu/~remzi/OSTEP/file-disks.pdf) | [calculate and compare access time in the hard disk drive](simulation/file-disks)
+[RAID](http://www.cs.wisc.edu/~remzi/OSTEP/file-raid.pdf) | [run simulator to understand how RAID system work](simulation/file-raid)
 [FS Intro](http://www.cs.wisc.edu/~remzi/OSTEP/file-intro.pdf) | 
 [FS Implementation](http://www.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf) | Run [vsfs.py](file-implementation)
 [Fast File System](http://www.cs.wisc.edu/~remzi/OSTEP/file-ffs.pdf) | Run [ffs.py](file-ffs)
