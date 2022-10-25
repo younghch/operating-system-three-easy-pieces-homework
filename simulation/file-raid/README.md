@@ -42,7 +42,9 @@ mapping.[details](https://github.com/remzi-arpacidusseau/ostep-homework/tree/mas
 
 # Questions
 1. Use the simulator to perform some basic RAID mapping tests. Run with different levels (0, 1, 4, 5) and see if you can figure out the mappings of a set of requests. For RAID-5, see if you can figure out the difference between left-symmetric and left-asymmetric layouts. Use some different random seeds to generate different problems than above.
+
   ![raid layouts](./raid5-layouts.png)
+  
   blockSize 4096, numDisks 4, chunkSize 4k
   ```
 
