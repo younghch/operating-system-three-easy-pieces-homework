@@ -335,7 +335,7 @@ different workloads.
 
 4. Now use the reverse flag but increase the size of each request with the -S flag. Try specifying sizes of 8k, 12k, and 16k, while varying the RAID level. What happens to the underlying I/O pattern when the size of the request increases? Make sure to try this with the sequential workload too (-W sequential); for what request sizes are RAID-4 and RAID-5 much more I/O efficient?
 
-  RAID-4 and RAID-5 much more I/O efficient for chunk size of 16k Sequential read/write is made on both data and parity disk.
+  RAID-4 and RAID-5 much more I/O efficient for chunk size of 16k. Because the sequential read/write is made on both data and parity disk.
 
   ```
   python3 raid.py -L 5 -R 20 -n 5 -w 100 -5 LA -C 16k -r -c -W sequential
@@ -368,8 +368,104 @@ different workloads.
   
 5. Use the timing mode of the simulator (-t) to estimate the performance of 100 random reads to the RAID, while varying the RAID levels, using 4 disks.
 
+  Throughput of random read is N * R for raid-0,1,5, (N-1) * R for raid-4.
+
+  ```
+  python3 raid.py -t -n 100 -D 4 -s 42 -L 0 -c
+
+  disk:0  busy:  59.08  I/Os:    21 (sequential:0 nearly:3 random:18)
+  disk:1  busy:  80.53  I/Os:    27 (sequential:0 nearly:1 random:26)
+  disk:2  busy: 100.00  I/Os:    34 (sequential:0 nearly:2 random:32)
+  disk:3  busy:  52.99  I/Os:    18 (sequential:0 nearly:1 random:17)
+
+  STAT totalTime 333.30000000000007
+
+  python3 raid.py -t -n 100 -D 4 -s 42 -L 1 -c
+
+  disk:0  busy:  61.56  I/Os:    21 (sequential:0 nearly:2 random:19)
+  disk:1  busy: 100.00  I/Os:    34 (sequential:0 nearly:1 random:33)
+  disk:2  busy:  81.38  I/Os:    27 (sequential:0 nearly:0 random:27)
+  disk:3  busy:  54.16  I/Os:    18 (sequential:0 nearly:1 random:17)
+
+  STAT totalTime 335.1000000000001
+
+  python3 raid.py -t -n 100 -D 4 -s 42 -L 4 -c
+
+  disk:0  busy:  63.37  I/Os:    28 (sequential:0 nearly:4 random:24)
+  disk:1  busy: 100.00  I/Os:    40 (sequential:0 nearly:0 random:40)
+  disk:2  busy:  75.97  I/Os:    32 (sequential:0 nearly:3 random:29)
+  disk:3  busy:   0.00  I/Os:     0 (sequential:0 nearly:0 random:0)
+
+  STAT totalTime 404.0000000000002  
+
+  python3 raid.py -t -n 100 -D 4 -s 42 -L 5 -c
+
+  disk:0  busy:  60.27  I/Os:    21 (sequential:0 nearly:2 random:19)
+  disk:1  busy:  80.81  I/Os:    27 (sequential:0 nearly:1 random:26)
+  disk:2  busy: 100.00  I/Os:    34 (sequential:0 nearly:1 random:33)
+  disk:3  busy:  53.30  I/Os:    18 (sequential:0 nearly:1 random:17)
+
+  STAT totalTime 334.50000000000006
+  ```
 6. Do the same as above, but increase the number of disks. How does the performance of each RAID level scale as the number of disks increases?
+
+  ```
+  python3 raid.py -t -n 100 -D 8 -s 42 -L 0 -c: totalTime 230.19999999999996
+  python3 raid.py -t -n 100 -D 8 -s 42 -L 1 -c: totalTime 237.09999999999994
+  python3 raid.py -t -n 100 -D 8 -s 42 -L 4 -c: totalTime 192.09999999999994
+  python3 raid.py -t -n 100 -D 8 -s 42 -L 5 -c: totalTime 233.09999999999994
+  ```
 
 7. Do the same as above, but use all writes (-w 100) instead of reads. How does the performance of each RAID level scale now? Can you do a rough estimate of the time it will take to complete the workload of 100 random writes?
 
+  ```
+  python3 raid.py -t -n 100 -D 4 -s 42 -w 100 -L 0 -c
+
+  disk:0  busy:  59.08  I/Os:    21 (sequential:0 nearly:3 random:18)
+  disk:1  busy:  80.53  I/Os:    27 (sequential:0 nearly:1 random:26)
+  disk:2  busy: 100.00  I/Os:    34 (sequential:0 nearly:2 random:32)
+  disk:3  busy:  52.99  I/Os:    18 (sequential:0 nearly:1 random:17)
+
+  STAT totalTime 333.30000000000007
+
+  python3 raid.py -t -n 100 -D 4 -s 42 -w 100 -L 1 -c
+
+  disk:0  busy: 100.00  I/Os:    55 (sequential:0 nearly:3 random:52)
+  disk:1  busy: 100.00  I/Os:    55 (sequential:0 nearly:3 random:52)
+  disk:2  busy:  83.95  I/Os:    45 (sequential:0 nearly:0 random:45)
+  disk:3  busy:  83.95  I/Os:    45 (sequential:0 nearly:0 random:45)
+
+  STAT totalTime 541.4000000000004
+
+  python3 raid.py -t -n 100 -D 4 -s 42 -w 100 -L 4 -c
+
+  disk:0  busy:  26.47  I/Os:    56 (sequential:0 nearly:32 random:24)
+  disk:1  busy:  41.77  I/Os:    80 (sequential:0 nearly:40 random:40)
+  disk:2  busy:  31.73  I/Os:    64 (sequential:0 nearly:35 random:29)
+  disk:3  busy: 100.00  I/Os:   200 (sequential:0 nearly:110 random:90)
+
+  STAT totalTime 967.3000000000012
+
+  python3 raid.py -t -n 100 -D 4 -s 42 -w 100 -L 5 -c
+
+  disk:0  busy:  72.86  I/Os:    84 (sequential:0 nearly:46 random:38)
+  disk:1  busy: 100.00  I/Os:   112 (sequential:0 nearly:59 random:53)
+  disk:2  busy:  98.89  I/Os:   112 (sequential:0 nearly:61 random:51)
+  disk:3  busy:  82.44  I/Os:    92 (sequential:0 nearly:49 random:43)
+
+  STAT totalTime 549.1000000000005
+  ```
+
 8. Run the timing mode one last time, but this time with a sequential workload (-W sequential). How does the performance vary with RAID level, and when doing reads versus writes? How about when varying the size of each request? What size should you write to a RAID when using RAID-4 or RAID-5?
+
+  ```
+  python3 raid.py -t -n 100 -D 4 -s 42 -W sequential -L 0 -c: totalTime 12.499999999999991
+  python3 raid.py -t -n 100 -D 4 -s 42 -W sequential -L 1 -c: totalTime 14.899999999999983
+  python3 raid.py -t -n 100 -D 4 -s 42 -W sequential -L 4 -c: totalTime 13.399999999999988
+  python3 raid.py -t -n 100 -D 4 -s 42 -W sequential -L 5 -c: totalTime 13.299999999999988
+
+  python3 raid.py -t -n 100 -D 4 -s 42 -W sequential -L 0 -w 100 -c: totalTime 12.499999999999991
+  python3 raid.py -t -n 100 -D 4 -s 42 -W sequential -L 1 -w 100 -c: totalTime 14.999999999999982
+  python3 raid.py -t -n 100 -D 4 -s 42 -W sequential -L 4 -w 100 -c: totalTime 13.399999999999988
+  python3 raid.py -t -n 100 -D 4 -s 42 -W sequential -L 5 -w 100 -c: totalTime 13.399999999999988
+  ```
