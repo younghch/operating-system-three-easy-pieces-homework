@@ -3,7 +3,8 @@
 #include <time.h>
 #include <assert.h>
 
-void    set_permission(mode_t mode, char *permission){
+void    set_permission(mode_t mode, char *permission)
+{
     for (int i=0; i<10; i++)
         permission[i] = '-';
     permission[10] = 0;
@@ -24,14 +25,16 @@ void    set_permission(mode_t mode, char *permission){
     
 }
 
-void    set_time_format(struct timespec *ts, char *time_format) {
+void    set_time_format(struct timespec *ts, char *time_format) 
+{
     struct  tm  tm;
 
     gmtime_r(&ts->tv_sec, &tm);
     strftime(time_format, 20, "%Y-%m-%d %H:%M:%S", &tm);
 }
 
-int     main(int argc, char *argv[]) {
+int     main(int argc, char *argv[]) 
+{
     
     char            *path;
     char            permission[11];
