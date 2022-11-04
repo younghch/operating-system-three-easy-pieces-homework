@@ -1,7 +1,7 @@
 #include "list-files.h"
 #include <errno.h>
 
-int s_total_blocks = 0;
+int g_total_blocks = 0;
 
 int     main(int argc, char *argv[]) {
     char    *path;
@@ -46,7 +46,7 @@ void    print_ls_l(char *full_path, size_t start_idx, char *name)
     struct  stat    st;
     struct  passwd  *user;
     struct  group   *group;
-    char            permission[10];
+    char            permission[11];
     char            time_modify[12];
 
     if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
@@ -54,7 +54,7 @@ void    print_ls_l(char *full_path, size_t start_idx, char *name)
     
     strcpy(full_path + start_idx, name);
     assert(stat(full_path, &st) == 0);
-    s_total_blocks += st.st_blocks;
+    g_total_blocks += st.st_blocks;
     user = getpwuid(st.st_uid);
     group = getgrgid(st.st_gid);
 
@@ -86,6 +86,7 @@ void    ls_l(DIR *dir, char *path)
     
     while ((entry = readdir(dir)) != NULL)
         print_ls_l(full_path, parent_len+1, entry->d_name);
+    printf("total %d\n", g_total_blocks);
 }
 
 void    set_permission(mode_t mode, char *permission)
