@@ -1,4 +1,7 @@
 #include "list-files.h"
+#include <errno.h>
+
+int s_total_blocks = 0;
 
 int     main(int argc, char *argv[]) {
     char    *path;
@@ -6,36 +9,22 @@ int     main(int argc, char *argv[]) {
     char    is_l;
 
     assert(argc < 4);
-    is_l = 0;
 
-    if (argc == 1) 
-        path = ".";
-    else if (argc == 2)
-    {
-        if (strcmp(argv[1], "-l") == 0)
-        {
+    is_l = 0;
+    path = ".";
+    
+    for (int i=1; i < argc; i++){
+        if (strcmp(argv[i], "-l") == 0)
             is_l = TRUE;
-            path = ".";
-        } 
         else
-            path = argv[1];
-    } 
-    else 
-    {
-        is_l = TRUE;
-        if (strcmp(argv[1], "-l") == 0)
-            path = argv[2];
-        else if (strcmp(argv[2], "-l") == 0)
-            path = argv[1];
-        else
-            assert(TRUE == FALSE);
+            path = argv[i];
     }
 
     dir = opendir(path);
     assert(dir != NULL);
 
     if (is_l == TRUE)
-        ls_l(dir);
+        ls_l(dir, path);
     else
         ls(dir);
 
@@ -43,16 +32,16 @@ int     main(int argc, char *argv[]) {
 
 }
 
-void    print_ls(char *sub_path)
+void    print_ls(char *name)
 {
-    if (strcmp(sub_path, ".") == 0 || strcmp(sub_path, "..") == 0)
+    if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
         return;
 
-    fputs(sub_path, stdout);
+    fputs(name, stdout);
     fputs("\t", stdout);
 }
 
-void    print_ls_l(char *sub_path)
+void    print_ls_l(char *full_path, size_t start_idx, char *name)
 {
     struct  stat    st;
     struct  passwd  *user;
@@ -60,22 +49,19 @@ void    print_ls_l(char *sub_path)
     char            permission[10];
     char            time_modify[12];
 
-    if (strcmp(sub_path, ".") == 0 || strcmp(sub_path, "..") == 0)
+    if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
         return;
     
-    assert(stat(sub_path, &st) == 0);
-
+    strcpy(full_path + start_idx, name);
+    assert(stat(full_path, &st) == 0);
+    s_total_blocks += st.st_blocks;
     user = getpwuid(st.st_uid);
     group = getgrgid(st.st_gid);
 
     set_permission(st.st_mode, permission);
     set_time_format(&st.st_mtimespec, time_modify);
     
-    puts(sub_path);
-    printf("%s\n", sub_path);
-    printf("%s\t%hu\t%s\t%s\t%5lld\t%s\n", permission, st.st_nlink, user->pw_name, group->gr_name, st.st_size, time_modify);
-    printf("%s\t%hu\t%s\t%s\t%5lld\t%s\t%s", permission, st.st_nlink, user->pw_name, group->gr_name, st.st_size, time_modify, sub_path);
-    
+    printf("%s\t%hu\t%s\t%s\t%5lld\t%s\t%s\n", permission, st.st_nlink, user->pw_name, group->gr_name, st.st_size, time_modify, name);
 }
 
 void    ls(DIR *dir) 
@@ -87,12 +73,19 @@ void    ls(DIR *dir)
     puts("");
 }
 
-void    ls_l(DIR *dir) 
+void    ls_l(DIR *dir, char *path) 
 {
     struct dirent   *entry;
+    char            *full_path;
+    size_t          parent_len;
 
+    parent_len = strlen(path);
+    full_path = malloc(parent_len+1+MAXNAMLEN+1);
+    strcpy(full_path, path);
+    full_path[parent_len] = '/';
+    
     while ((entry = readdir(dir)) != NULL)
-        print_ls_l(entry->d_name);
+        print_ls_l(full_path, parent_len+1, entry->d_name);
 }
 
 void    set_permission(mode_t mode, char *permission)
