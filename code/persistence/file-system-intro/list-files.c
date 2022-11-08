@@ -1,5 +1,4 @@
 #include "list-files.h"
-#include <errno.h>
 
 int g_total_blocks = 0;
 
