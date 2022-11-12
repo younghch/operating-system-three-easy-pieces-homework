@@ -25,14 +25,14 @@ void    print_folder_and_subfiles(char* folder, char level)
     cur_path_len = strlen(folder);
     while ((content = readdir(cur_folder)) != NULL)
     {
-        is_directory = check_is_folder(folder, content->d_name);
+        is_directory = content->d_type == DT_DIR ? TRUE : FALSE;
         if (is_directory)
         {
             print_name_with_prefix(content->d_name, level+1, TRUE);
 
             nxt_path_len = strlen(content->d_name);
-            assert(nxt_folder = malloc(cur_path_len+1+nxt_path_len+1) != NULL);
-            strcpy(nxt_folder, cur_folder);
+            assert((nxt_folder = malloc(cur_path_len+1+nxt_path_len+1)) != NULL);
+            strcpy(nxt_folder, folder);
             nxt_folder[cur_path_len] = PATH_SEPARATOR;
             strcpy(nxt_folder+cur_path_len+2, content->d_name);
 
