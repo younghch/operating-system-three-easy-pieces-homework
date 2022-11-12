@@ -44,6 +44,7 @@ void    read_blocks_backward(struct stat *st, int fd, int lines, char **result) 
     blksize_t   blk_size;
     off_t       offset;
     int         new_line_chs;
+    int         read_count;
     char        *buffer;
 
     new_line_chs = 0;
@@ -53,6 +54,15 @@ void    read_blocks_backward(struct stat *st, int fd, int lines, char **result) 
     while (new_line_chs < lines && offset >= 0) {
         buffer = malloc(blk_size);
         lseek(fd, offset, SEEK_SET);
+
+        while ((read_count = read(fd, buffer, blk_size)) == 0)
+        {
+            offset -= blk_size;
+            lseek(fd, offset, SEEK_SET);
+        }
+        
+        if (g_result_length == 0 && buffer[read_count-1] == '\n')
+            new_line_chs--;
 
         new_line_chs += check_lines_in_block(fd, buffer, blk_size);
         result[g_result_length] = buffer;
@@ -66,13 +76,12 @@ void    read_blocks_backward(struct stat *st, int fd, int lines, char **result) 
 
 int     check_lines_in_block(int fd, char *buffer, size_t blk_size) {
     int     count;
-    int     i;
+    int     i, ri;
     char    c;
 
     count = 0;
     i = 0;
 
-    read(fd, buffer, blk_size);
     while ((c = buffer[i]) != 0){
         if (c == '\n') count += 1;
         i++;
