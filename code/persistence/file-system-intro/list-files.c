@@ -31,6 +31,31 @@ int     main(int argc, char *argv[]) {
 
 }
 
+void    ls(DIR *dir) 
+{
+    struct dirent   *entry;
+
+    while ((entry = readdir(dir)) != NULL)
+        print_ls(entry->d_name);
+    puts("");
+}
+
+void    ls_l(DIR *dir, char *path) 
+{
+    struct dirent   *entry;
+    char            *full_path;
+    size_t          parent_len;
+
+    parent_len = strlen(path);
+    full_path = malloc(parent_len+1+MAXNAMLEN+1);
+    strcpy(full_path, path);
+    full_path[parent_len] = '/';
+    
+    while ((entry = readdir(dir)) != NULL)
+        print_ls_l(full_path, parent_len+1, entry->d_name);
+    printf("total %d\n", g_total_blocks);
+}
+
 void    print_ls(char *name)
 {
     if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
@@ -61,31 +86,6 @@ void    print_ls_l(char *full_path, size_t start_idx, char *name)
     set_time_format(&st.st_mtimespec, time_modify);
     
     printf("%s\t%hu\t%s\t%s\t%5lld\t%s\t%s\n", permission, st.st_nlink, user->pw_name, group->gr_name, st.st_size, time_modify, name);
-}
-
-void    ls(DIR *dir) 
-{
-    struct dirent   *entry;
-
-    while ((entry = readdir(dir)) != NULL)
-        print_ls(entry->d_name);
-    puts("");
-}
-
-void    ls_l(DIR *dir, char *path) 
-{
-    struct dirent   *entry;
-    char            *full_path;
-    size_t          parent_len;
-
-    parent_len = strlen(path);
-    full_path = malloc(parent_len+1+MAXNAMLEN+1);
-    strcpy(full_path, path);
-    full_path[parent_len] = '/';
-    
-    while ((entry = readdir(dir)) != NULL)
-        print_ls_l(full_path, parent_len+1, entry->d_name);
-    printf("total %d\n", g_total_blocks);
 }
 
 void    set_permission(mode_t mode, char *permission)
