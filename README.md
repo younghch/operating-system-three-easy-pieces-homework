@@ -1,7 +1,6 @@
 # Homework from the book [Operating System Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/)
 
 # Link to the answer of each chapter
-**link starts with 'Run' is still working on**
 
 ***if you found something wrong with the answers please make pull request or send me an email at [younghch42@gmail.com](malito:younghch42@gmail.com)***
 
@@ -32,7 +31,7 @@ Chapter | What is homework about
 Chapter | What is homework about
 --------|-----------
 [Threads Intro](http://www.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf) | [learn the condition of critical section](simulation/threads-intro)
-[Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf)	| [run some c codes to understand the benefit of using mutex](simulation/threads-api)
+[Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf)	| [find bugs of multi-threaded code with helgrind](simulation/threads-api)
 [Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| [compare various locking algorithms](simulation/threads-locks)
 [Lock Usage](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf) | [build concurrent data structures and measure its performance](code/concurrency/lock-based-concurrent-data-structures)
 [Condition Variables](http://www.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf) | [learn the right usage of condition variables](simulation/threads-cv)
@@ -45,14 +44,14 @@ Chapter | What is homework about
 Chapter | What is homework about
 --------|-----------
 [Hard Disk Drives](http://www.cs.wisc.edu/~remzi/OSTEP/file-disks.pdf) | [calculate and compare access time in the hard disk drive](simulation/file-disks)
-[RAID](http://www.cs.wisc.edu/~remzi/OSTEP/file-raid.pdf) | [run simulator to understand how RAID system work](simulation/file-raid)
-[FS Intro](http://www.cs.wisc.edu/~remzi/OSTEP/file-intro.pdf) | 
-[FS Implementation](http://www.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf) | Run [vsfs.py](file-implementation)
-[Fast File System](http://www.cs.wisc.edu/~remzi/OSTEP/file-ffs.pdf) | Run [ffs.py](file-ffs)
-[Crash Consistency and Journaling](http://www.cs.wisc.edu/~remzi/OSTEP/file-journaling.pdf) | Run [fsck.py](file-journaling)
-[Log-Structured File Systems](http://www.cs.wisc.edu/~remzi/OSTEP/file-lfs.pdf) | Run [lfs.py](file-lfs)
-[Solid-State Disk Drives](http://www.cs.wisc.edu/~remzi/OSTEP/file-ssd.pdf) | Run [ssd.py](file-ssd)
-[Data Integrity](http://www.cs.wisc.edu/~remzi/OSTEP/file-integrity.pdf) | Run [checksum.py](file-integrity) and 
+[RAID](http://www.cs.wisc.edu/~remzi/OSTEP/file-raid.pdf) | [understand how the RAID system work](simulation/file-raid)
+[FS Intro](http://www.cs.wisc.edu/~remzi/OSTEP/file-intro.pdf) | [write codes to get familiar with the file-system api](code/persistence/file-system-intro)
+[FS Implementation](http://www.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf) | 
+[Fast File System](http://www.cs.wisc.edu/~remzi/OSTEP/file-ffs.pdf) | 
+[Crash Consistency and Journaling](http://www.cs.wisc.edu/~remzi/OSTEP/file-journaling.pdf) | 
+[Log-Structured File Systems](http://www.cs.wisc.edu/~remzi/OSTEP/file-lfs.pdf) | 
+[Solid-State Disk Drives](http://www.cs.wisc.edu/~remzi/OSTEP/file-ssd.pdf) | 
+[Data Integrity](http://www.cs.wisc.edu/~remzi/OSTEP/file-integrity.pdf) | 
 [Distributed Intro](http://www.cs.wisc.edu/~remzi/OSTEP/dist-intro.pdf) | 
-[NFS](http://www.cs.wisc.edu/~remzi/OSTEP/dist-nfs.pdf) | Write some analysis code
-[AFS](http://www.cs.wisc.edu/~remzi/OSTEP/dist-afs.pdf) | Run [afs.py](dist-afs)
+[NFS](http://www.cs.wisc.edu/~remzi/OSTEP/dist-nfs.pdf) | 
+[AFS](http://www.cs.wisc.edu/~remzi/OSTEP/dist-afs.pdf) | 
