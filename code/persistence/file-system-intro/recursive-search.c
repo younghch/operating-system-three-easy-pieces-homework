@@ -5,7 +5,7 @@ int     main(int argc, char *argv[])
     char    *folder;
 
     assert(argc < 3);
-    if (argc == 2)
+    if (argc == 1)
         folder = ".";
     else
         folder = argv[1];
@@ -15,16 +15,18 @@ int     main(int argc, char *argv[])
 
 void    print_folder_and_subfiles(char* folder, char level)
 {
-    DIR             *cur_folder;
+    DIR             *cur_open_folder;
     char            *nxt_folder;
     struct dirent   *content;
     char            is_directory;
     int             cur_path_len, nxt_path_len;
 
-    cur_folder = opendir(folder);
+    cur_open_folder = opendir(folder);
     cur_path_len = strlen(folder);
-    while ((content = readdir(cur_folder)) != NULL)
+    while ((content = readdir(cur_open_folder)) != NULL)
     {
+        if (strcmp(content->d_name, ".") == 0 || strcmp(content->d_name, "..") == 0)
+            continue;
         is_directory = content->d_type == DT_DIR ? TRUE : FALSE;
         if (is_directory)
         {
@@ -34,7 +36,7 @@ void    print_folder_and_subfiles(char* folder, char level)
             assert((nxt_folder = malloc(cur_path_len+1+nxt_path_len+1)) != NULL);
             strcpy(nxt_folder, folder);
             nxt_folder[cur_path_len] = PATH_SEPARATOR;
-            strcpy(nxt_folder+cur_path_len+2, content->d_name);
+            strcpy(nxt_folder+cur_path_len+1, content->d_name);
 
             print_folder_and_subfiles(nxt_folder, level+1);
             free(nxt_folder);
